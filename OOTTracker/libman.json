@@ -4,19 +4,19 @@
   "libraries": [
     {
       "library": "bootstrap@5.3.3",
-      "destination": "lib/bootstrap/"
+      "destination": "assets/lib/bootstrap/"
     },
     {
       "library": "jquery@3.7.1",
-      "destination": "lib/jquery/"
+      "destination": "assets/lib/jquery/"
     },
     {
       "library": "popper.js@2.11.8",
-      "destination": "lib/popper.js/"
+      "destination": "assets/lib/popper.js/"
     },
     {
       "library": "bootstrap-table@1.22.6",
-      "destination": "lib/bootstrap-table/"
+      "destination": "assets/lib/bootstrap-table/"
     }
   ]
 }
