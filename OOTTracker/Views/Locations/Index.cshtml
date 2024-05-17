@@ -1,3 +1,25 @@
-﻿@{
+﻿@model OOTTracker.Models.Locations.LocationsIndexModel
+@{
     Layout = "_Layout";
 }
+<h2>Locations</h2>
+<table data-toggle="table" data-pagination="true" data-page-size="10" data-search="true">
+    <thead>
+        <tr>
+            <th data-width="125">#</th>
+            <th data-field="Name" data-sortable="true"></th>
+        </tr>
+    </thead>
+    @if (Model.Locations != null)
+    {
+        <tbody>
+            @foreach (var location in Model.Locations)
+            {
+                <tr>
+                    <td></td>
+                    <td>@location.Name</td>
+                </tr>
+            }
+        </tbody>
+    }
+</table>

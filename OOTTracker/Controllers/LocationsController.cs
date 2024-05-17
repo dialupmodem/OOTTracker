@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using OOTTracker.Models.Locations;
 
 namespace OOTTracker.Controllers
 {
@@ -6,7 +7,12 @@ namespace OOTTracker.Controllers
     {
         public IActionResult Index()
         {
-            return View();
+            var _model = new LocationsIndexModel()
+            {
+                Locations = new List<LocationIndexDto>() { new LocationIndexDto() { Id = new Guid(), Name = "Test Location" } }
+            };
+
+            return View(_model);
         }
     }
 }
