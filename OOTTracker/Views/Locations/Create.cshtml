@@ -1,0 +1,30 @@
+﻿@model OOTTracker.Models.Locations.CreateLocationModel
+@{
+    Layout = "_Layout";
+}
+<form method="post">
+    <div class="row">
+        <div class="col mt-2">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Add Location</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-6 mb-3">
+                            <label for="Name">Name</label>
+                            <input type="text" class="form-control" name="Name" value="@Model.Name" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
