@@ -1,0 +1,41 @@
+﻿@model OOTTracker.Models.Collectables.CollectablesIndexModel
+@{
+    Layout = "_Layout";
+}
+<h2>Collectables</h2>
+<div class="row mt-3">
+    <div class="col-3">
+        <a class="btn btn-primary" href="/Collectables/Edit">Add Collectable</a>
+    </div>
+</div>
+<table data-toggle="table" data-pagination="true" data-page-size="10" data-search="true">
+    <thead>
+        <tr>
+            <th data-width="125">#</th>
+            <th data-width="300" data-field="Location" data-sortable="true">Location Name</th>
+            <th data-width="300" data-field="Type" data-sortable="true">Type</th>
+            <th data-field="Description" data-sortable="true">Description</th>
+        </tr>
+    </thead>
+    @if (Model.Collectables != null)
+    {
+        <tbody>
+            @foreach (var collectable in Model.Collectables)
+            {
+                <tr>
+                    <td>
+                        <a href="/Collectables/Edit/@collectable.Id" class="btn btn-primary me-2">
+                            <i class="bi-pencil"></i>
+                        </a>
+                        <a href="/Collectables/Delete/@collectable.Id" class="btn btn-danger">
+                            <i class="bi-trash3"></i>
+                        </a>
+                    </td>
+                    <td>@collectable.Location</td>
+                    <td>@collectable.Type <i class="@collectable.IconClass"></i></td>
+                    <td>@collectable.Description</td>
+                </tr>
+            }
+        </tbody>
+    }
+</table>
