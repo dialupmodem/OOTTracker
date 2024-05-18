@@ -4,6 +4,8 @@ namespace OOTTracker.Data
 {
     public class ApplicationDbContext : DbContext
     {
+
+        public DbSet<CollectableType> CollectableTypes { get; set; }
         public DbSet<Location> Locations { get; set; }
 
         public ApplicationDbContext() { }
