@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OOTTracker.Data;
 
@@ -11,9 +12,11 @@ using OOTTracker.Data;
 namespace OOTTracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240522072518_Add-ItemChecks-ItemCheckTypes-ItemAgeRequirements")]
+    partial class AddItemChecksItemCheckTypesItemAgeRequirements
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -43,7 +46,7 @@ namespace OOTTracker.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("Collectables", (string)null);
+                    b.ToTable("Collectables");
                 });
 
             modelBuilder.Entity("OOTTracker.Data.CollectableType", b =>
@@ -60,7 +63,7 @@ namespace OOTTracker.Migrations
 
                     b.HasKey("CollectableTypeId");
 
-                    b.ToTable("CollectableTypes", (string)null);
+                    b.ToTable("CollectableTypes");
                 });
 
             modelBuilder.Entity("OOTTracker.Data.ItemAgeRequirement", b =>
@@ -74,7 +77,7 @@ namespace OOTTracker.Migrations
 
                     b.HasKey("ItemAgeRequirementId");
 
-                    b.ToTable("ItemAgeRequirements", (string)null);
+                    b.ToTable("ItemAgeRequirements");
                 });
 
             modelBuilder.Entity("OOTTracker.Data.ItemCheck", b =>
@@ -103,7 +106,7 @@ namespace OOTTracker.Migrations
 
                     b.HasIndex("LocationId");
 
-                    b.ToTable("ItemChecks", (string)null);
+                    b.ToTable("ItemChecks");
                 });
 
             modelBuilder.Entity("OOTTracker.Data.ItemCheckType", b =>
@@ -117,7 +120,7 @@ namespace OOTTracker.Migrations
 
                     b.HasKey("ItemCheckTypeId");
 
-                    b.ToTable("ItemCheckTypes", (string)null);
+                    b.ToTable("ItemCheckTypes");
                 });
 
             modelBuilder.Entity("OOTTracker.Data.Location", b =>
@@ -131,7 +134,7 @@ namespace OOTTracker.Migrations
 
                     b.HasKey("LocationId");
 
-                    b.ToTable("Locations", (string)null);
+                    b.ToTable("Locations");
                 });
 
             modelBuilder.Entity("OOTTracker.Data.Playthrough", b =>
@@ -151,7 +154,7 @@ namespace OOTTracker.Migrations
 
                     b.HasKey("PlaythroughId");
 
-                    b.ToTable("Playthroughs", (string)null);
+                    b.ToTable("Playthroughs");
                 });
 
             modelBuilder.Entity("OOTTracker.Data.Collectable", b =>

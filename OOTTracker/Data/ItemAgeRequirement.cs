@@ -1,11 +1,10 @@
 ﻿namespace OOTTracker.Data
 {
-    public class Location
+    public class ItemAgeRequirement
     {
-        public Guid LocationId { get; set; }
+        public Guid ItemAgeRequirementId { get; set; }
         public string? Name { get; set; }
 
-        public virtual ICollection<Collectable>? Collectables { get; set; }
         public virtual ICollection<ItemCheck>? ItemChecks { get; set; }
     }
 }

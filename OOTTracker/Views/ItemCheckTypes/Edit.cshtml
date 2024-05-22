@@ -1,0 +1,28 @@
+﻿@model OOTTracker.Models.ItemCheckTypes.ItemCheckTypeEditViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+}
+
+<form method="post">
+    <div class="row">
+        <div class="card">
+            <div class="card-header">
+                <h2>Edit Item Check Type</h2>
+            </div>
+            <div class="card-body">
+                <div class="row mb-3">
+                    <div class="col-6">
+                        <label for="Name">Name</label>
+                        <input class="form-control" asp-for="Name" />
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

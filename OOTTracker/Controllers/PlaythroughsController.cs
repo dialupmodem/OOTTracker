@@ -69,7 +69,7 @@ namespace OOTTracker.Controllers
             if (id == null)
             {
                 _playthrough = new Playthrough() { DateCreated = DateTime.Now };
-                _context.Playthroughs.Add(_playthrough);
+                await _context.Playthroughs.AddAsync(_playthrough);
             }
             else
             {
