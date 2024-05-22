@@ -7,6 +7,7 @@ namespace OOTTracker.Data
 
         public DbSet<Collectable> Collectables { get; set; }
         public DbSet<CollectableType> CollectableTypes { get; set; }
+        public DbSet<InventoryEquipment> InventoryEquipment { get; set; }
         public DbSet<ItemAgeRequirement> ItemAgeRequirements { get; set; }
         public DbSet<ItemCheck> ItemChecks { get; set; }
         public DbSet<ItemCheckType> ItemCheckTypes { get; set; }
