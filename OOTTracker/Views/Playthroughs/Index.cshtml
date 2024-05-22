@@ -1,0 +1,43 @@
+﻿@{
+    Layout = "_Layout";
+}
+@model OOTTracker.Models.Playthroughs.PlaythroughsIndexModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<h2>Playthroughs</h2>
+<div class="row mt-3">
+    <div class="col-3">
+        <a class="btn btn-primary" asp-action="Edit">Add Playthrough</a>
+    </div>
+</div>
+<table data-toggle="table" data-pagination="true" data-page-size="10" data-search="true">
+    <thead>
+        <tr>
+            <th data-width="125">#</th>
+            <th data-field="Name" data-sortable="true">Name</th>
+            <th data-width="300" data-field="Date" data-sortable="true">Date</th>
+            <th data-width="125" data-field="Randomized" data-sortable="true">Randomized</th>
+        </tr>
+    </thead>
+    @if (Model.Playthroughs != null)
+    {
+        <tbody>
+            @foreach (var playthrough in Model.Playthroughs)
+            {
+                <tr>
+                    <td>
+                        <a  class="btn btn-primary me-2" asp-action="Edit" asp-route-id="@playthrough.Id">
+                            <i class="bi-pencil"></i>
+                        </a>
+                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@playthrough.Id">
+                            <i class="bi-trash3"></i>
+                        </a>
+                    </td>
+                    <td>@playthrough.Name</td>
+                    <td>@playthrough.Date</td>
+                    <td>@playthrough.Randomized</td>
+                </tr>
+            }
+        </tbody>
+    }
+</table>

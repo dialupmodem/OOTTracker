@@ -8,6 +8,7 @@ namespace OOTTracker.Data
         public DbSet<Collectable> Collectables { get; set; }
         public DbSet<CollectableType> CollectableTypes { get; set; }
         public DbSet<Location> Locations { get; set; }
+        public DbSet<Playthrough> Playthroughs { get; set; }
 
         public ApplicationDbContext() { }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
