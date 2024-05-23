@@ -1,0 +1,40 @@
+﻿@model OOTTracker.Models.ItemCheckRequirements.ItemCheckRequirementEditViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@{
+    Layout = "_Layout";
+}
+
+<form method="post">
+    <div class="row">
+        <div class="col">
+            <div class="card">
+                <div class="card-header">
+                    <h2>Edit Item Check Requirement</h2>
+                </div>
+                <div class="card-body">
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <label for="ItemCheckId">Item Check</label>
+                            <select class="form-select" asp-for="ItemCheckId" asp-items="Model.ItemChecks">
+                                <option value="">Select an item check...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-6">
+                            <label for="InventoryEquipmentId">Equipment</label>
+                            <select class="form-select" asp-for="InventoryEquipmentId" asp-items="Model.EquipmentItems">
+                                <option value="">Select an equipment item...</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col">
+                            <button type="submit" class="btn btn-primary">Save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
