@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OOTTracker.Data;
@@ -131,6 +130,12 @@ namespace OOTTracker.Controllers
             _itemCheck.Description = model.Description;
 
             await _context.SaveChangesAsync();
+
+            //if (TempData["QuickAdd-Redirect"] != null)
+            //{
+            //    TempData["QuickAdd-ItemCheckId"] = _itemCheck.ItemCheckId;
+            //    return RedirectToAction("Edit", TempData["QuickAdd-Redirect"]?.ToString());
+            //}
 
             return RedirectToAction("Index");
         }

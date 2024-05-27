@@ -19,6 +19,9 @@
                                 <option value="">Select an item check...</option>
                             </select>
                         </div>
+                        <div class="col-3 align-self-end">
+                            <a asp-action="ItemCheckQuickAdd" class="btn btn-success">Add</a>
+                        </div>
                     </div>
                     <div class="row mb-3">
                         <div class="col-6">
@@ -26,6 +29,9 @@
                             <select class="form-select" asp-for="InventoryEquipmentId" asp-items="Model.EquipmentItems">
                                 <option value="">Select an equipment item...</option>
                             </select>
+                        </div>
+                        <div class="col-3 align-self-end">
+                            <a asp-action="EquipmentQuickAdd" class="btn btn-success">Add</a>
                         </div>
                     </div>
                     <div class="row">

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using OOTTracker.Data;
 using OOTTracker.Models.Playthroughs;
+using OOTTracker.Models.Shared;
 
 namespace OOTTracker.Controllers
 {
@@ -85,7 +86,89 @@ namespace OOTTracker.Controllers
 
             await _context.SaveChangesAsync();
 
+            var _itemChecks = await _context.ItemChecks.ToListAsync();
+            foreach (var itemCheck in _itemChecks)
+            {
+                await _context.PlaythroughItemChecks.AddAsync(new PlaythroughItemCheck()
+                {
+                    PlaythroughId = _playthrough.PlaythroughId,
+                    ItemCheckId = itemCheck.ItemCheckId,
+                    Obtained = false
+                });
+            }
+
+            await _context.SaveChangesAsync();
+
             return RedirectToAction("Index");
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> EditProgress(Guid id)
+        {
+            var _itemChecks = await _context.PlaythroughItemChecks
+                .Where(p => p.PlaythroughId == id)
+                .Include(p => p.ItemCheck)
+                .ThenInclude(i => i.Location)
+                .Include(p => p.ItemCheck)
+                .ThenInclude(i => i.ItemCheckType)
+                .ToListAsync();
+
+            var _model = new EditPlaythroughProgressViewModel() { ItemChecks = new List<LocationItemChecksViewModel>()};
+
+            var _locations = _itemChecks.Select(i => i.ItemCheck.Location).GroupBy(l => l.LocationId).Select(l => l.First()).ToList();
+            foreach (var location in _locations)
+            {
+                var _locationItemChecks = _itemChecks
+                    .Where(i => i.ItemCheck != null &&
+                    i.ItemCheck.Location != null &&
+                    i.ItemCheck.Location.LocationId ==
+                    location.LocationId);
+
+                var _locationItemCheckModel = new LocationItemChecksViewModel()
+                {
+                    LocationId = location.LocationId,
+                    LocationName = location.Name,
+                    ItemChecks = _itemChecks
+                        .Where(i => i.ItemCheck != null && i.ItemCheck.Location != null && i.ItemCheck.LocationId == location.LocationId)
+                        .Select(i => new EditPlaythroughProgressItemCheckViewModel()
+                        {
+                            ItemCheckId = i.ItemCheckId,
+                            Obtained = i.Obtained ?? false,
+                            CheckType = i.ItemCheck.ItemCheckType.Name,
+                            Description = i.ItemCheck.Description
+                        })
+                        .ToList()
+                };
+
+
+                _model.ItemChecks.Add(_locationItemCheckModel);
+            }
+
+            return View(_model);
+
+            //var _itemCheckBoxes = _itemChecks
+            //    .Select(i => new CheckboxListViewModel()
+            //    {
+            //        Id = i.ItemCheckId!.Value,
+            //        Text = $"{i.ItemCheck.Location.Name} - {i.ItemCheck.ItemCheckType.Name} {i.ItemCheck.Description}"
+            //    })
+            //    .ToList();
+
+            //var _model = new EditPlaythroughProgressViewModel()
+            //{
+            //    ItemChecks = _itemCheckBoxes
+            //};
+
+            //return View(_model);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> EditProgress([FromRoute] Guid id, [FromForm] EditPlaythroughProgressFormDataModel model)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
+
+            return View(model);
         }
 
         public async Task <IActionResult> Delete(Guid id)
