@@ -8,7 +8,7 @@ namespace OOTTracker.Controllers
 {
     public class ItemCheckRequirementsController : Controller
     {
-       private readonly ApplicationDbContext _context;
+        private readonly ApplicationDbContext _context;
 
         public ItemCheckRequirementsController(ApplicationDbContext context)
         {
@@ -70,12 +70,24 @@ namespace OOTTracker.Controllers
             })
             .ToList();
 
+            Guid? _quickAddItemCheckId = null;
+            Guid? _quickAddEquipmentId = null;
+
+            if (TempData["QuickAdd-ItemCheckId"] != null)
+                _quickAddItemCheckId = Guid.Parse(TempData["QuickAdd-ItemCheckId"]!.ToString()!);
+
+            if (TempData["QuickAdd-EquipmentId"] != null)
+                _quickAddEquipmentId = Guid.Parse(TempData["QuickAdd-EquipmentId"]!.ToString()!);
+
+
             if (id == null)
             {
                 _model = new ItemCheckRequirementEditViewModel()
                 {
                     ItemChecks = _itemCheckSelections,
-                    EquipmentItems = _equipmentSelections
+                    EquipmentItems = _equipmentSelections,
+                    ItemCheckId = _quickAddItemCheckId,
+                    InventoryEquipmentId = _quickAddEquipmentId
                 };
 
                 return View(_model);
@@ -91,8 +103,8 @@ namespace OOTTracker.Controllers
             {
                 ItemChecks = _itemCheckSelections,
                 EquipmentItems = _equipmentSelections,
-                ItemCheckId = _itemCheckRequirement.ItemCheckId,
-                InventoryEquipmentId = _itemCheckRequirement.InventoryEquipmentId,
+                ItemCheckId = _quickAddItemCheckId ?? _itemCheckRequirement.ItemCheckId,
+                InventoryEquipmentId = _quickAddEquipmentId ?? _itemCheckRequirement.InventoryEquipmentId,
             };
 
             return View(_model);
@@ -139,6 +151,17 @@ namespace OOTTracker.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
+        }
+
+        public IActionResult ItemCheckQuickAdd()
+        {
+            TempData["QuickAdd-Redirect"] = "ItemCheckRequirements";
+            return RedirectToAction("Edit", "ItemChecks");
+        }
+        public IActionResult EquipmentQuickAdd()
+        {
+            TempData["QuickAdd-Redirect"] = "ItemCheckRequirements";
+            return RedirectToAction("Edit", "InventoryEquipment");
         }
     }
 }

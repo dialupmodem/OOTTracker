@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using OOTTracker.Data;
 
@@ -11,9 +12,11 @@ using OOTTracker.Data;
 namespace OOTTracker.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240523205923_FKTweaks")]
+    partial class FKTweaks
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -189,33 +192,6 @@ namespace OOTTracker.Migrations
                     b.ToTable("Playthroughs");
                 });
 
-            modelBuilder.Entity("OOTTracker.Data.PlaythroughItemCheck", b =>
-                {
-                    b.Property<Guid>("PlaythroughItemCheckId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid?>("ItemCheckId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<bool?>("Obtained")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid?>("PlaythroughId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<string>("Spoiler")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("PlaythroughItemCheckId");
-
-                    b.HasIndex("ItemCheckId");
-
-                    b.HasIndex("PlaythroughId");
-
-                    b.ToTable("PlaythroughItemChecks");
-                });
-
             modelBuilder.Entity("OOTTracker.Data.Collectable", b =>
                 {
                     b.HasOne("OOTTracker.Data.CollectableType", "CollectableType")
@@ -274,23 +250,6 @@ namespace OOTTracker.Migrations
                     b.Navigation("ItemCheck");
                 });
 
-            modelBuilder.Entity("OOTTracker.Data.PlaythroughItemCheck", b =>
-                {
-                    b.HasOne("OOTTracker.Data.ItemCheck", "ItemCheck")
-                        .WithMany("PlaythroughItemChecks")
-                        .HasForeignKey("ItemCheckId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("OOTTracker.Data.Playthrough", "Playthrough")
-                        .WithMany("PlaythroughItemChecks")
-                        .HasForeignKey("PlaythroughId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.Navigation("ItemCheck");
-
-                    b.Navigation("Playthrough");
-                });
-
             modelBuilder.Entity("OOTTracker.Data.CollectableType", b =>
                 {
                     b.Navigation("Collectables");
@@ -309,8 +268,6 @@ namespace OOTTracker.Migrations
             modelBuilder.Entity("OOTTracker.Data.ItemCheck", b =>
                 {
                     b.Navigation("ItemCheckRequirements");
-
-                    b.Navigation("PlaythroughItemChecks");
                 });
 
             modelBuilder.Entity("OOTTracker.Data.ItemCheckType", b =>
@@ -323,11 +280,6 @@ namespace OOTTracker.Migrations
                     b.Navigation("Collectables");
 
                     b.Navigation("ItemChecks");
-                });
-
-            modelBuilder.Entity("OOTTracker.Data.Playthrough", b =>
-                {
-                    b.Navigation("PlaythroughItemChecks");
                 });
 #pragma warning restore 612, 618
         }

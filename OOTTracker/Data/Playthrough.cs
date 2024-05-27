@@ -6,5 +6,7 @@
         public string? Name { get; set; }
         public bool? IsRandomized { get; set; }
         public DateTime? DateCreated { get; set; }
+
+        public virtual ICollection<PlaythroughItemCheck>? PlaythroughItemChecks { get; set; }
     }
 }

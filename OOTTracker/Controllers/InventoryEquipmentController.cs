@@ -81,6 +81,12 @@ namespace OOTTracker.Controllers
             _inventoryEquipment.Name = model.Name;
             await _context.SaveChangesAsync();
 
+            //if (TempData["QuickAdd-Redirect"] != null)
+            //{
+            //    TempData["QuickAdd-EquipmentId"] = _inventoryEquipment.InventoryEquipmentId;
+            //    return RedirectToAction("Edit", TempData["QuickAdd-Redirect"]?.ToString());
+            //}
+
             return RedirectToAction("Index");
         }
 

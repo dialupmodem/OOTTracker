@@ -12,6 +12,7 @@
         public virtual ItemCheckType? ItemCheckType { get; set; }
         public virtual ItemAgeRequirement? ItemAgeRequirement { get; set; }
         public virtual ICollection<ItemCheckRequirement>? ItemCheckRequirements { get; set; }
+        public virtual ICollection<PlaythroughItemCheck>? PlaythroughItemChecks { get; set; }
 
     }
 }
