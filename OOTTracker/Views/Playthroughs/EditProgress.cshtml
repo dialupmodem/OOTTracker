@@ -5,16 +5,6 @@
 }
 
 <form method="post">
-    @*  <div>
-    @for (int i = 0; i < Model.ItemChecks.Count; i++)
-    {
-    <div class="form-check">
-    <input class="form-check-input" type="checkbox" asp-for="@Model.ItemChecks[i].IsChecked" />
-    <label class="form-check-label">@Model.ItemChecks[i].Text</label>
-    <input type="hidden" asp-for="@Model.ItemChecks[i].Id" />
-    </div>
-    }
-    </div> *@
     <div class="container-fluid mt-4">
         @if (Model.ItemChecks != null && Model.ItemChecks.Count > 0)
         {
