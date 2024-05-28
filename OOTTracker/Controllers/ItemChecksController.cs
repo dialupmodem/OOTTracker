@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Binders;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OOTTracker.Data;
@@ -43,7 +44,7 @@ namespace OOTTracker.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Edit(Guid? id)
+        public async Task<IActionResult> Edit(Guid? id, Guid? location)
         {
             var _locations = await _context.Locations.ToListAsync();
             var _checkTypes = await _context.ItemCheckTypes.ToListAsync();
@@ -77,7 +78,8 @@ namespace OOTTracker.Controllers
                 {
                     Locations = _locationItems,
                     ItemCheckTypes = _checkTypeItems,
-                    ItemAgeRequirements = _ageRequirementItems
+                    ItemAgeRequirements = _ageRequirementItems,
+                    LocationId = location
                 };
 
                 return View(_model);
@@ -104,7 +106,7 @@ namespace OOTTracker.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit([FromRoute] Guid? id, [FromForm] ItemCheckEditFormDataModel model)
+        public async Task<IActionResult> Edit([FromRoute] Guid? id, [FromQuery] Guid? location, [FromForm] ItemCheckEditFormDataModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -137,6 +139,9 @@ namespace OOTTracker.Controllers
             //    return RedirectToAction("Edit", TempData["QuickAdd-Redirect"]?.ToString());
             //}
 
+            if (location != null)
+                return RedirectToAction("Edit", "Locations", new { id = location.Value });
+            
             return RedirectToAction("Index");
         }
 

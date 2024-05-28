@@ -1,4 +1,5 @@
-﻿@model OOTTracker.Models.Locations.EditLocationModel
+﻿@model OOTTracker.Models.Locations.EditLocationViewModel
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = "_Layout";
 }
@@ -10,12 +11,68 @@
                     <h2>Edit Location</h2>
                 </div>
                 <div class="card-body">
-                    <div class="row">
-                        <div class="col-6 mb-3">
-                            <label for="Name">Name</label>
-                            <input type="text" class="form-control" name="Name" value="@Model.Name" />
+                    <ul class="nav nav-tabs" id="navTab" role="tablist">
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link active" id="general-info-tab" data-bs-toggle="tab" data-bs-target="#general-info" type="button" role="tab">General Info</button>
+                        </li>
+                        <li class="nav-item" role="presentation">
+                            <button class="nav-link" id="item-checks-tab" data-bs-toggle="tab" data-bs-target="#item-checks" type="button" role="tab">Item Checks</button>
+                        </li>
+                    </ul>
+                    <div class="tab-content" id="navTabContent">
+                        <div class="tab-pane fade show active" id="general-info" role="tabpanel">
+                            <div class="row">
+                                <div class="col-6 mb-3">
+                                    <label for="Name">Name</label>
+                                    <input type="text" class="form-control" name="Name" value="@Model.Name" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="tab-pane fade" id="item-checks" role="tabpanel">
+                            <div class="row mt-2">
+                                <div class="col">
+                                    <a class="btn btn-success" asp-controller="ItemChecks" asp-action="Edit" asp-route-location="@ViewData["id"]">Add</a>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <table data-toggle="table" data-pagination="true" data-page-size="10" data-search="true">
+                                        <thead>
+                                            <tr>
+                                                <th data-width="125">#</th>
+                                                <th data-field="CheckType" data-sortable="true">Type</th>
+                                                <th data-field="Description" data-sortable="true">Description</th>
+                                                <th data-field="AgeRequirement" data-sortable="true">Age</th>
+                                            </tr>
+                                        </thead>
+                                        @if (Model.ItemChecks != null)
+                                        {
+                                            <tbody>
+                                                @foreach (var itemCheck in Model.ItemChecks)
+                                                {
+                                                    <tr>
+                                                        <td>
+                                                            <a href="/ItemChecks/Edit/@itemCheck.ItemCheckId" class="btn btn-primary me-2">
+                                                                <i class="bi-pencil"></i>
+                                                            </a>
+                                                            <a href="/ItemChecks/Delete/@itemCheck.ItemCheckId" class="btn btn-danger me-2">
+                                                                <i class="bi-trash3"></i>
+                                                            </a>
+                                                        </td>
+                                                        <td>@itemCheck.CheckType</td>
+                                                        <td>@itemCheck.Description</td>
+                                                        <td>@itemCheck.AgeRequirement</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        }
+                                    </table>
+                                </div>
+                            </div>
+                          
                         </div>
                     </div>
+                  
                     <div class="row">
                         <div class="col">
                             <button type="submit" class="btn btn-primary">Save</button>

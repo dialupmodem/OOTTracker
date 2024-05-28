@@ -63,17 +63,39 @@ namespace OOTTracker.Controllers
             if (_location == null)
                 return NotFound();
 
-            var _model = new EditLocationModel()
+            var _model = new EditLocationViewModel()
             {
                 Id = _location.LocationId,
                 Name = _location.Name
             };
 
+            if (id != null)
+            {
+                ViewData["id"] = id;
+
+                var _itemChecks = await _context.ItemChecks
+                    .Where(i => i.LocationId == id)
+                    .Include(i => i.ItemCheckType)
+                    .Include(i => i.ItemAgeRequirement)
+                    .ToListAsync();
+
+                var _itemCheckDtos = _itemChecks.Select(i => new ItemCheckDto()
+                {
+                    ItemCheckId = i.ItemCheckId,
+                    CheckType = i.ItemCheckType?.Name,
+                    Description = i.Description,
+                    AgeRequirement = i.ItemAgeRequirement?.Name
+                })
+                .ToList();
+
+                _model.ItemChecks = _itemCheckDtos;
+            }
+
             return View(_model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit([FromRoute] Guid id, [FromForm] EditLocationModel model)
+        public async Task<IActionResult> Edit([FromRoute] Guid id, [FromForm] EditLocationViewModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest();
