@@ -14,6 +14,7 @@ namespace OOTTracker.Data
         public DbSet<ItemCheckType> ItemCheckTypes { get; set; }
         public DbSet<Location> Locations { get; set; }
         public DbSet<Playthrough> Playthroughs { get; set; }
+        public DbSet<PlaythroughEquipment> PlaythroughEquipment { get; set; }
         public DbSet<PlaythroughItemCheck> PlaythroughItemChecks { get; set; }
 
         public ApplicationDbContext() { }
@@ -30,6 +31,11 @@ namespace OOTTracker.Data
 
             modelBuilder.Entity<InventoryEquipment>()
                 .HasMany(i => i.ItemCheckRequirements)
+                .WithOne(i => i.InventoryEquipment)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<InventoryEquipment>()
+                .HasMany(i => i.PlaythroughEquipment)
                 .WithOne(i => i.InventoryEquipment)
                 .OnDelete(DeleteBehavior.Cascade);
 
@@ -65,6 +71,11 @@ namespace OOTTracker.Data
 
             modelBuilder.Entity<Playthrough>()
                 .HasMany(p => p.PlaythroughItemChecks)
+                .WithOne(p => p.Playthrough)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Playthrough>()
+                .HasMany(p => p.PlaythroughEquipment)
                 .WithOne(p => p.Playthrough)
                 .OnDelete(DeleteBehavior.Cascade);
 
