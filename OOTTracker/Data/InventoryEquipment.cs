@@ -6,5 +6,6 @@
         public string? Name { get; set; }
 
         public virtual ICollection<ItemCheckRequirement>? ItemCheckRequirements { get; set; }
+        public virtual ICollection<PlaythroughEquipment>? PlaythroughEquipment { get; set; }
     }
 }

@@ -8,5 +8,6 @@
         public DateTime? DateCreated { get; set; }
 
         public virtual ICollection<PlaythroughItemCheck>? PlaythroughItemChecks { get; set; }
+        public virtual ICollection<PlaythroughEquipment>? PlaythroughEquipment { get; set; }
     }
 }
