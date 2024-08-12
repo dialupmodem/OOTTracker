@@ -19,5 +19,6 @@ app.UseStaticFiles( new StaticFileOptions()
     RequestPath = "/assets",
     ServeUnknownFileTypes = true
 });
+app.UseStaticFiles();
 
 app.Run();
