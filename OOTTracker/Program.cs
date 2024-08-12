@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.FileProviders;
 using OOTTracker.Data;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,12 +12,6 @@ builder.Services.AddMvc();
 var app = builder.Build();
 
 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}");
-app.UseStaticFiles( new StaticFileOptions()
-{
-    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "assets")),
-    RequestPath = "/assets",
-    ServeUnknownFileTypes = true
-});
 app.UseStaticFiles();
 
 app.Run();
