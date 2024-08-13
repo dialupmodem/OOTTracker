@@ -3,95 +3,164 @@
 @{
     Layout = "_Layout";
 }
+@section HeaderContent {
+    Edit Playthrough Progress
+}
 
 <form method="post">
-    <div class="container-fluid mt-4">
-        <ul class="nav nav-tabs" id="navTab" role="tablist">
+    <div class="mb-4">
+        <h2 class="h5 mb-3">Obtained Equipment</h2>
+        <div class="row">
+            <div class="col-3 col-sm-2 mb-3">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <i class="bi bi-shield"></i>
+                        <p class="card-text mt-2">Equipment Name</p>
+                        <input type="checkbox" class="form-check-input" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="item-checks-tabs">
+        <ul class="nav nav-tabs" id="itemChecksTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="all-checks-tab" data-bs-toggle="tab" data-bs-target="#all-checks" type="button" role="tab">
-                    All Checks
-                </button>
+                <button class="nav-link active" id="all-checks-tab" data-bs-toggle="tab" data-bs-target="#allChecks" type="button" role="tab" aria-controls="allChecks" aria-selected="true">All Item Checks</button>
             </li>
             <li class="nav-item" role="presentation">
-                <button class="nav-link" id="available-checks-tab" data-bs-toggle="tab" data-bs-target="#available-checks" type="button" role="tab">
-                    Available Checks
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="equipment-tab" data-bs-toggle="tab" data-bs-target="#equipment" type="button" role="tab">
-                    Equipment
-                </button>
+                <button class="nav-link" id="available-checks-tab" data-bs-toggle="tab" data-bs-target="#availableChecks" type="button" role="tab" aria-controls="availableChecks" aria-selected="false">Available Item Checks</button>
             </li>
         </ul>
-        <div class="tab-content" id="navTabContent">
-            <div class="tab-pane fade show active mt-4" id="all-checks" role="tabpanel">
-                @if (Model.ItemChecks != null && Model.ItemChecks.Count > 0)
-                {
-                    <div class="row">
-                        @foreach (var locationItemCheck in Model.ItemChecks)
-                        {
-                            @if (locationItemCheck.ItemChecks != null && locationItemCheck.ItemChecks.Count > 0)
-                            {
-                                <div class="col-3">
-                                    <div class="card" style="min-height: 450px;">
-                                        <div class="card-header">
-                                            <h4>@locationItemCheck.LocationName</h4>
+        <div class="tab-content" id="itemChecksTabsContent">
+            <div class="tab-pane fade show active" id="allChecks" role="tabpanel" aria-labelledby="all-checks-tab">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="accordion mt-3" id="allItemChecksAccordion1">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="locationOneHeader">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#locationOne" aria-expanded="false" aria-controls="locationOne">
+                                        Location 1
+                                    </button>
+                                </h2>
+                                <div id="locationOne" class="accordion-collapse collapse" aria-labelledby="locationOneHeader" data-bs-parent="#allItemChecksAccordion1">
+                                    <div class="accordion-body">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <input type="checkbox" class="form-check-input me-2" />
+                                            <span class="me-2">Item Check 1</span>
+                                            <i class="bi bi-box-seam me-2"></i>
+                                            <i class="bi bi-person"></i>
                                         </div>
-                                        <div class="card-body">
-                                            @for (var i = 0; i < locationItemCheck.ItemChecks.Count; i++)
-                                            {
-                                                <div class="row">
-                                                    <div class="col">
-                                                        <div class="form-check">
-                                                            <input class="form-check-input" type="checkbox" asp-for="@locationItemCheck.ItemChecks[i].Obtained" />
-                                                            <label class="form-check-label">@locationItemCheck.ItemChecks[i].Description</label>
-                                                            <input type="hidden" asp-for="@locationItemCheck.ItemChecks[i].ItemCheckId" />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            }
+                                        <div class="d-flex align-items-center mb-2">
+                                            <input type="checkbox" class="form-check-input me-2" />
+                                            <span class="me-2">Item Check 2</span>
+                                            <i class="bi bi-box-seam me-2"></i>
+                                            <i class="bi bi-person"></i>
+                                        </div>
+                                        <div class="d-flex align-items-center mb-2">
+                                            <input type="checkbox" class="form-check-input me-2" />
+                                            <span class="me-2">Item Check 3</span>
+                                            <i class="bi bi-box-seam me-2"></i>
+                                            <i class="bi bi-person"></i>
                                         </div>
                                     </div>
                                 </div>
-                            }
-                        }
+                            </div>
+                        </div>
                     </div>
-                }
-            </div>
-            <div id="available-checks" class="tab-pane fade mt-4" role="tabpanel"></div>
-            <div id="equipment" class="tab-pane fade mt-4" role="tabpanel">
-                <table data-toggle="table" data-pagination="true" data-page-size="100" data-search="true">
-                    <thead>
-                        <tr>
-                            <th data-width="35">#</th>
-                            <th data-field="Name"></th>
-                        </tr>
-                    </thead>
-                    @if (Model.Equipment != null)
-                    {
-                        <tbody>
-                            @for (var i = 0; i < Model.Equipment.Count; i++)
-                            {
-                                <tr>
-                                    <td>
-                                        <div class="form-check">
-                                            <input class="form-check-input" type="checkbox" asp-for="@Model.Equipment[i].Obtained" />
-                                            <input type="hidden" asp-for="@Model.Equipment[i].Id" />
+                    <div class="col-lg-4">
+                        <div class="accordion mt-3 id="allItemChecksAccordion2">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="locationTwoHeader">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#locationTwo" aria-expanded="false" aria-controls="locationTwo">
+                                        Location 2
+                                    </button>
+                                </h2>
+                                <div id="locationTwo" class="accordion-collapse collapse" aria-labelledby="locationTwoHeader" data-bs-parent="#allItemChecksAccordion2">
+                                    <div class="accordion-body">
+                                        <div class="d-flex align-ites-center mb-2">
+                                            <input type="checkbox" class="form-check-input me-2" />
+                                            <span class="me-2">Item Check 1</span>
+                                            <i class="bi bi-box-seam me-2"></i>
+                                            <i class="bi bi-person"></i>
                                         </div>
-                                    </td>
-                                    <td>@Model.Equipment[i].Name</td>
-                                </tr>
-                            }
-                        </tbody>
-                    }
-                </table>
+                                        <div class="d-flex align-items-center mb-2">
+                                            <input type="checkbox" class="form-check-input me-2" />
+                                            <span class="me-2">Item Check 2</span>
+                                            <i class="bi bi-box-seam me-2"></i>
+                                            <i class="bi bi-person"></i>
+                                        </div>
+                                        <div class="d-flex align-items-center mb-2">
+                                            <input type="checkbox" class="form-check-input me-2" />
+                                            <span class="me-2">Item Check 3</span>
+                                            <i class="bi bi-box-seam me-2"></i>
+                                            <i class="bi bi-person"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="accordion mt-3" id="allItemChecksAccordion3">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="locationThreeHeader">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#locationThree" aria-expanded="false" aria-controls="locationThree">
+                                        Location 3
+                                    </button>
+                                </h2>
+                                <div id="locationThree" class="accordion-collapse collapse" aria-labelledby="locationThreeHeader" data-bs-parent="#allItemChecksAccordion3">
+                                    <div class="accordion-body">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <input type="checkbox" class="form-check-input me-2" />
+                                            <span class="me-2">Item Check 1</span>
+                                            <i class="bi bi-box-seam me-2"></i>
+                                            <i class="bi bi-person"></i>
+                                        </div>
+                                        <div class="d-flex align-items-center mb-2">
+                                            <input type="checkbox" class="form-check-input me-2" />
+                                            <span class="me-2">Item Check 2</span>
+                                            <i class="bi bi-box-seam me-2"></i>
+                                            <i class="bi bi-person"></i>
+                                        </div>
+                                        <div action="d-flex align-items center mb-2">
+                                            <input type="checkbox" class="form-check-input me-2" />
+                                            <span class="me-2">Item Check 3</span>
+                                            <i class="bi bi-box seam me-2"></i>
+                                            <i class="bi bi-person"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-        </div>
-   
-        <div>
-            <button type="submit" class="btn btn-primary">Save</button>
+            <div id="availableChecks" class="tab-pane fade" role="tabpanel" aria-labelledby="available-checks-tab">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="accordion mt-3" id="availableItemChecksAccordion1">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="availableLocationOneHeader">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#availableLocationOne" aria-expanded="false" aria-controls="availableLoationOne">
+                                        Location Name
+                                    </button>
+                                </h2>
+                                <div id="availableLocationOne" class="accordion-collapse collapse" aria-labelledby="availableLocationOneHeader" data-bs-parent="#availableItemChecksAccordion1">
+                                    <div class="accordion-body">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <input type="checkbox" class="form-check-input me-2" />
+                                            <span class="me-2">Item Check Name</span>
+                                            <i class="bi bi-box-seam me-2"></i>
+                                            <i class="bi bi-person"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-
-
 </form>
