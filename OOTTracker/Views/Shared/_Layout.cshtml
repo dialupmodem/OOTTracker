@@ -1,53 +1,59 @@
 ﻿<!DOCTYPE html>
 <html lang="en">
-    <head>
-        <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-        <link href="~/lib/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" />
-        <link href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
-        <link href="~/css/styles.css" rel="stylesheet" />
-    </head>
-    <body>
-        <div class="container-fluid">
-            <div class="row flex-column flex-md-row">
-                <nav id="sidebar" class="col-12 col-md-3 col-lg-2 d-md-block sidebar">
-                    <div class="d-flex flex-column align-items-center">
-                        <h2 class="mb-4">OOT Tracker</h2>
-                        <div class="collapse show" id="sidebarMenu">
-                            <ul class="nav flex-column w-100">
-                                <li class="nav-item">
-                                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Equipment</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Locations</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Item Checks</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Item Check Types</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Item Check Requirements</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" href="#">Item Age Requirements</a>
-                                </li>
-                            </ul>
-                        </div>
+<head>
+    <link href="~/lib/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-table/bootstrap-table.min.css" rel="stylesheet" />
+    <link href="~/lib/bootstrap-icons/font/bootstrap-icons.min.css" rel="stylesheet" />
+    <link href="~/css/styles.css" rel="stylesheet" />
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row flex-column flex-md-row">
+            <nav id="sidebar" class="col-12 col-md-3 col-lg-2 d-md-block sidebar">
+                <div class="d-flex flex-column align-items-center">
+                    <h2 class="mb-4">OOT Tracker</h2>
+                    <div class="collapse show" id="sidebarMenu">
+                        <ul class="nav flex-column w-100">
+                            <li class="nav-item">
+                                <a class="nav-link active" aria-current="page" href="#">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Equipment</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Locations</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Item Checks</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Item Check Types</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Item Check Requirements</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Item Age Requirements</a>
+                            </li>
+                        </ul>
                     </div>
-                </nav>
-                <div id="mainContent" class="col-12 col-md-9 ms-sm-auto col-lg-10 main-content">
-                    @RenderBody()
                 </div>
+            </nav>
+            <div id="mainContent" class="col-12 col-md-9 ms-sm-auto col-lg-10 main-content">
+                @if (IsSectionDefined("HeaderContent"))
+                {
+                    <div class="header">
+                        <h1 class="h4">@RenderSection("HeaderContent")</h1>
+                    </div>
+                }
+                @RenderBody()
             </div>
         </div>
+    </div>
 
-        <script src="~/lib/jquery/jquery.min.js"></script>
-        <script src="~/lib/popper.js/esm/popper.min.js"></script>
-        <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
-        <script src="~/lib/bootstrap-table/bootstrap-table.min.js"></script>
-    </body>
+    <script src="~/lib/jquery/jquery.min.js"></script>
+    <script src="~/lib/popper.js/esm/popper.min.js"></script>
+    <script src="~/lib/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="~/lib/bootstrap-table/bootstrap-table.min.js"></script>
+</body>
 </html>

@@ -74,6 +74,14 @@ accordion-button {
     margin-bottom: 10px;
     font-size: 20px;
 }
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: block;
+}
+.card-link:hover .card {
+    background-color: #f8f9fa;
+}
 .playthrough-list .card-body {
     display: flex;
     justify-content: space-between;
