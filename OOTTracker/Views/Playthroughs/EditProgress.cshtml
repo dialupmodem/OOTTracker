@@ -4,23 +4,29 @@
     Layout = "_Layout";
 }
 @section HeaderContent {
-    Edit Playthrough Progress
+                        Edit Playthrough Progress - @Model.Name
 }
 
 <form method="post">
     <div class="mb-4">
-        <h2 class="h5 mb-3">Obtained Equipment</h2>
-        <div class="row">
-            <div class="col-3 col-sm-2 mb-3">
-                <div class="card text-center">
-                    <div class="card-body">
-                        <i class="bi bi-shield"></i>
-                        <p class="card-text mt-2">Equipment Name</p>
-                        <input type="checkbox" class="form-check-input" />
+        @if (Model.Equipment != null)
+        {
+            <h2 class="h5 mb-3">Obtained Equipment</h2>
+            <div class="row">
+                @foreach (var equipment in Model.Equipment)
+                {
+                    <div class="col-1 col-sm-1 mb-3">
+                        <div class="card text-center" style="font-size: 0.9em;">
+                            <div class="card-body">
+                                <i class="bi bi-shield"></i>
+                                <p class="card-text mt-2">@equipment.Name</p>
+                                <input type="checkbox" class="form-check-input" />
+                            </div>
+                        </div>
                     </div>
-                </div>
+                }
             </div>
-        </div>
+        }
     </div>
     <div class="item-checks-tabs">
         <ul class="nav nav-tabs" id="itemChecksTabs" role="tablist">
@@ -33,108 +39,145 @@
         </ul>
         <div class="tab-content" id="itemChecksTabsContent">
             <div class="tab-pane fade show active" id="allChecks" role="tabpanel" aria-labelledby="all-checks-tab">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div class="accordion mt-3" id="allItemChecksAccordion1">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="locationOneHeader">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#locationOne" aria-expanded="false" aria-controls="locationOne">
-                                        Location 1
-                                    </button>
-                                </h2>
-                                <div id="locationOne" class="accordion-collapse collapse" aria-labelledby="locationOneHeader" data-bs-parent="#allItemChecksAccordion1">
-                                    <div class="accordion-body">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <input type="checkbox" class="form-check-input me-2" />
-                                            <span class="me-2">Item Check 1</span>
-                                            <i class="bi bi-box-seam me-2"></i>
-                                            <i class="bi bi-person"></i>
+                @if (Model.ItemChecks != null)
+                {
+                    <div class="row">
+                        @for (var i = 0; i < Model.ItemChecks.Count; i++)
+                        {
+                            var itemCheckLocation = Model.ItemChecks[i];
+
+                            <div class="col-lg-4">
+                                <div class="accordion mt-3" id="@($"allItemChecksAccordion{i}")">
+                                    <div action="accordion-item">
+                                        <h2 class="accordion-header" id="@($"location{i}Header")">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="@($"#location{i}")" aria-expanded="false" aria-controls="@($"location{i}")">
+                                                @itemCheckLocation.LocationName
+                                            </button>
+                                        </h2>
+                                        <div id="@($"location{i}")" class="accordion-collapse collapse" aria-labelledby="@($"location{i}Header")" data-bs-parent="@($"#allItemChecksAccordion{i}")">
+                                            @if (itemCheckLocation.ItemChecks != null)
+                                            {
+                                                <div class="accordion-body">
+                                                    @foreach (var itemCheck in itemCheckLocation.ItemChecks)
+                                                    {
+                                                        <div action="d-flex align-items-center mb-2">
+                                                            <input type="checkbox" class="form-check-input me-2" />
+                                                            <span class="me-2">@itemCheck.Description</span>
+                                                            <i class="bi bi-box-seam me-2" title="@itemCheck.CheckType"></i>
+                                                            <i class="bi bi-person" title="@itemCheck.Description"></i>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            }
                                         </div>
-                                        <div class="d-flex align-items-center mb-2">
-                                            <input type="checkbox" class="form-check-input me-2" />
-                                            <span class="me-2">Item Check 2</span>
-                                            <i class="bi bi-box-seam me-2"></i>
-                                            <i class="bi bi-person"></i>
+                                    </div>
+                                </div>
+                            </div>
+
+                        }
+                        <div class="col-lg-4">
+                            <div class="accordion mt-3" id="allItemChecksAccordion1">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="locationOneHeader">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#locationOne" aria-expanded="false" aria-controls="locationOne">
+                                            Location 1
+                                        </button>
+                                    </h2>
+                                    <div id="locationOne" class="accordion-collapse collapse" aria-labelledby="locationOneHeader" data-bs-parent="#allItemChecksAccordion1">
+                                        <div class="accordion-body">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <input type="checkbox" class="form-check-input me-2" />
+                                                <span class="me-2">Item Check 1</span>
+                                                <i class="bi bi-box-seam me-2"></i>
+                                                <i class="bi bi-person"></i>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <input type="checkbox" class="form-check-input me-2" />
+                                                <span class="me-2">Item Check 2</span>
+                                                <i class="bi bi-box-seam me-2"></i>
+                                                <i class="bi bi-person"></i>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <input type="checkbox" class="form-check-input me-2" />
+                                                <span class="me-2">Item Check 3</span>
+                                                <i class="bi bi-box-seam me-2"></i>
+                                                <i class="bi bi-person"></i>
+                                            </div>
                                         </div>
-                                        <div class="d-flex align-items-center mb-2">
-                                            <input type="checkbox" class="form-check-input me-2" />
-                                            <span class="me-2">Item Check 3</span>
-                                            <i class="bi bi-box-seam me-2"></i>
-                                            <i class="bi bi-person"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="accordion mt-3 id="allItemChecksAccordion2">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="locationTwoHeader">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#locationTwo" aria-expanded="false" aria-controls="locationTwo">
+                                            Location 2
+                                        </button>
+                                    </h2>
+                                    <div id="locationTwo" class="accordion-collapse collapse" aria-labelledby="locationTwoHeader" data-bs-parent="#allItemChecksAccordion2">
+                                        <div class="accordion-body">
+                                            <div class="d-flex align-ites-center mb-2">
+                                                <input type="checkbox" class="form-check-input me-2" />
+                                                <span class="me-2">Item Check 1</span>
+                                                <i class="bi bi-box-seam me-2"></i>
+                                                <i class="bi bi-person"></i>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <input type="checkbox" class="form-check-input me-2" />
+                                                <span class="me-2">Item Check 2</span>
+                                                <i class="bi bi-box-seam me-2"></i>
+                                                <i class="bi bi-person"></i>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <input type="checkbox" class="form-check-input me-2" />
+                                                <span class="me-2">Item Check 3</span>
+                                                <i class="bi bi-box-seam me-2"></i>
+                                                <i class="bi bi-person"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="accordion mt-3" id="allItemChecksAccordion3">
+                                <div class="accordion-item">
+                                    <h2 class="accordion-header" id="locationThreeHeader">
+                                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#locationThree" aria-expanded="false" aria-controls="locationThree">
+                                            Location 3
+                                        </button>
+                                    </h2>
+                                    <div id="locationThree" class="accordion-collapse collapse" aria-labelledby="locationThreeHeader" data-bs-parent="#allItemChecksAccordion3">
+                                        <div class="accordion-body">
+                                            <div class="d-flex align-items-center mb-2">
+                                                <input type="checkbox" class="form-check-input me-2" />
+                                                <span class="me-2">Item Check 1</span>
+                                                <i class="bi bi-box-seam me-2"></i>
+                                                <i class="bi bi-person"></i>
+                                            </div>
+                                            <div class="d-flex align-items-center mb-2">
+                                                <input type="checkbox" class="form-check-input me-2" />
+                                                <span class="me-2">Item Check 2</span>
+                                                <i class="bi bi-box-seam me-2"></i>
+                                                <i class="bi bi-person"></i>
+                                            </div>
+                                            <div action="d-flex align-items center mb-2">
+                                                <input type="checkbox" class="form-check-input me-2" />
+                                                <span class="me-2">Item Check 3</span>
+                                                <i class="bi bi-box seam me-2"></i>
+                                                <i class="bi bi-person"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="col-lg-4">
-                        <div class="accordion mt-3 id="allItemChecksAccordion2">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="locationTwoHeader">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#locationTwo" aria-expanded="false" aria-controls="locationTwo">
-                                        Location 2
-                                    </button>
-                                </h2>
-                                <div id="locationTwo" class="accordion-collapse collapse" aria-labelledby="locationTwoHeader" data-bs-parent="#allItemChecksAccordion2">
-                                    <div class="accordion-body">
-                                        <div class="d-flex align-ites-center mb-2">
-                                            <input type="checkbox" class="form-check-input me-2" />
-                                            <span class="me-2">Item Check 1</span>
-                                            <i class="bi bi-box-seam me-2"></i>
-                                            <i class="bi bi-person"></i>
-                                        </div>
-                                        <div class="d-flex align-items-center mb-2">
-                                            <input type="checkbox" class="form-check-input me-2" />
-                                            <span class="me-2">Item Check 2</span>
-                                            <i class="bi bi-box-seam me-2"></i>
-                                            <i class="bi bi-person"></i>
-                                        </div>
-                                        <div class="d-flex align-items-center mb-2">
-                                            <input type="checkbox" class="form-check-input me-2" />
-                                            <span class="me-2">Item Check 3</span>
-                                            <i class="bi bi-box-seam me-2"></i>
-                                            <i class="bi bi-person"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
-                    <div class="col-lg-4">
-                        <div class="accordion mt-3" id="allItemChecksAccordion3">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="locationThreeHeader">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#locationThree" aria-expanded="false" aria-controls="locationThree">
-                                        Location 3
-                                    </button>
-                                </h2>
-                                <div id="locationThree" class="accordion-collapse collapse" aria-labelledby="locationThreeHeader" data-bs-parent="#allItemChecksAccordion3">
-                                    <div class="accordion-body">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <input type="checkbox" class="form-check-input me-2" />
-                                            <span class="me-2">Item Check 1</span>
-                                            <i class="bi bi-box-seam me-2"></i>
-                                            <i class="bi bi-person"></i>
-                                        </div>
-                                        <div class="d-flex align-items-center mb-2">
-                                            <input type="checkbox" class="form-check-input me-2" />
-                                            <span class="me-2">Item Check 2</span>
-                                            <i class="bi bi-box-seam me-2"></i>
-                                            <i class="bi bi-person"></i>
-                                        </div>
-                                        <div action="d-flex align-items center mb-2">
-                                            <input type="checkbox" class="form-check-input me-2" />
-                                            <span class="me-2">Item Check 3</span>
-                                            <i class="bi bi-box seam me-2"></i>
-                                            <i class="bi bi-person"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                }
+
             </div>
             <div id="availableChecks" class="tab-pane fade" role="tabpanel" aria-labelledby="available-checks-tab">
                 <div class="row">

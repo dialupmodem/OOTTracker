@@ -168,6 +168,7 @@ namespace OOTTracker.Controllers
             })
             .ToList();
 
+            _model.Name = "test";
             return View(_model);
 
             //var _itemCheckBoxes = _itemChecks
