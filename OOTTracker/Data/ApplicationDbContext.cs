@@ -8,6 +8,7 @@ namespace OOTTracker.Data
         public DbSet<Collectable> Collectables { get; set; }
         public DbSet<CollectableType> CollectableTypes { get; set; }
         public DbSet<InventoryEquipment> InventoryEquipment { get; set; }
+        public DbSet<InventoryEquipmentCategory> InventoryEquipmentCategories { get; set; }
         public DbSet<ItemAgeRequirement> ItemAgeRequirements { get; set; }
         public DbSet<ItemCheckRequirement> ItemCheckRequirements { get; set; }
         public DbSet<ItemCheck> ItemChecks { get; set; }
@@ -37,6 +38,11 @@ namespace OOTTracker.Data
             modelBuilder.Entity<InventoryEquipment>()
                 .HasMany(i => i.PlaythroughEquipment)
                 .WithOne(i => i.InventoryEquipment)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<InventoryEquipmentCategory>()
+                .HasMany(i => i.InventoryEquipmentItems)
+                .WithOne(i => i.InventoryEquipmentCategory)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ItemAgeRequirement>()
