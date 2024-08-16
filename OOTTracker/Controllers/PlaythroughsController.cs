@@ -129,7 +129,7 @@ namespace OOTTracker.Controllers
                 .Include(p => p.InventoryEquipment)
                 .ToListAsync();
 
-            var _model = new EditPlaythroughProgressViewModel() { ItemChecks = new List<LocationItemChecksViewModel>()};
+            var _model = new EditPlaythroughProgressViewModel() { LocationItemChecks = new List<LocationItemChecksViewModel>()};
 
             var _locations = _itemChecks.Select(i => i.ItemCheck.Location).GroupBy(l => l.LocationId).Select(l => l.First()).ToList();
             foreach (var location in _locations)
@@ -157,7 +157,7 @@ namespace OOTTracker.Controllers
                 };
 
 
-                _model.ItemChecks.Add(_locationItemCheckModel);
+                _model.LocationItemChecks.Add(_locationItemCheckModel);
             }
 
             _model.Equipment = _equipment.Select(e => new PlaythroughEquipmentViewModel()

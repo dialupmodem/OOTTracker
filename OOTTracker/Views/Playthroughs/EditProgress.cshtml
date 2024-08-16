@@ -4,47 +4,74 @@
     Layout = "_Layout";
 }
 @section HeaderContent {
-                        Edit Playthrough Progress - @Model.Name
+        Edit Playthrough Progress - @Model.Name
 }
 
 <form method="post">
-    <div class="mb-4">
-        @if (Model.Equipment != null)
-        {
-            <h2 class="h5 mb-3">Obtained Equipment</h2>
-            <div class="row">
-                @foreach (var equipment in Model.Equipment)
-                {
-                    <div class="col-1 col-sm-1 mb-3">
-                        <div class="card text-center" style="font-size: 0.9em;">
-                            <div class="card-body">
-                                <i class="bi bi-shield"></i>
-                                <p class="card-text mt-2">@equipment.Name</p>
-                                <input type="checkbox" class="form-check-input" />
-                            </div>
-                        </div>
-                    </div>
-                }
-            </div>
-        }
-    </div>
     <div class="item-checks-tabs">
         <ul class="nav nav-tabs" id="itemChecksTabs" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="all-checks-tab" data-bs-toggle="tab" data-bs-target="#allChecks" type="button" role="tab" aria-controls="allChecks" aria-selected="true">All Item Checks</button>
+                <button class="nav-link active" id="equipment-tab" data-bs-toggle="tab" data-bs-target="#equipment" type="button" role="tab" aria-controls="equipment" aria-selected="true">Equipment</button>
             </li>
             <li class="nav-item" role="presentation">
                 <button class="nav-link" id="available-checks-tab" data-bs-toggle="tab" data-bs-target="#availableChecks" type="button" role="tab" aria-controls="availableChecks" aria-selected="false">Available Item Checks</button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="all-checks-tab" data-bs-toggle="tab" data-bs-target="#allChecks" type="button" role="tab" aria-controls="allChecks" aria-selected="true">All Item Checks</button>
+            </li>
         </ul>
         <div class="tab-content" id="itemChecksTabsContent">
-            <div class="tab-pane fade show active" id="allChecks" role="tabpanel" aria-labelledby="all-checks-tab">
-                @if (Model.ItemChecks != null)
+            <div id="equipment" class="tab-pane fade show active" role="tabpanel" aria-labelledby="equipment-tab">
+                @if (Model.Equipment != null)
+                {
+                    <div class="row mt-3">
+                        @foreach (var equipment in Model.Equipment)
+                        {
+                            <div class="col-1 col-sm-1 mb-3">
+                                <div class="card text-center" style="font-size: 0.9em;">
+                                    <div class="card-body">
+                                        <i class="bi bi-shield"></i>
+                                        <p class="card-text mt-2">@equipment.Name</p>
+                                        <input type="checkbox" class="form-check-input" />
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            <div id="availableChecks" class="tab-pane fade" role="tabpanel" aria-labelledby="available-checks-tab">
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="accordion mt-3" id="availableItemChecksAccordion1">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="availableLocationOneHeader">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#availableLocationOne" aria-expanded="false" aria-controls="availableLoationOne">
+                                        Location Name
+                                    </button>
+                                </h2>
+                                <div id="availableLocationOne" class="accordion-collapse collapse" aria-labelledby="availableLocationOneHeader" data-bs-parent="#availableItemChecksAccordion1">
+                                    <div class="accordion-body">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <input type="checkbox" class="form-check-input me-2" />
+                                            <span class="me-2">Item Check Name</span>
+                                            <i class="bi bi-box-seam me-2"></i>
+                                            <i class="bi bi-person"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" id="allChecks" role="tabpanel" aria-labelledby="all-checks-tab">
+                @if (Model.LocationItemChecks != null)
                 {
                     <div class="row">
-                        @for (var i = 0; i < Model.ItemChecks.Count; i++)
+                        @for (var i = 0; i < Model.LocationItemChecks.Count; i++)
                         {
-                            var itemCheckLocation = Model.ItemChecks[i];
+                            var itemCheckLocation = Model.LocationItemChecks[i];
 
                             <div class="col-lg-4">
                                 <div class="accordion mt-3" id="@($"allItemChecksAccordion{i}")">
@@ -179,31 +206,7 @@
                 }
 
             </div>
-            <div id="availableChecks" class="tab-pane fade" role="tabpanel" aria-labelledby="available-checks-tab">
-                <div class="row">
-                    <div class="col-lg-4">
-                        <div class="accordion mt-3" id="availableItemChecksAccordion1">
-                            <div class="accordion-item">
-                                <h2 class="accordion-header" id="availableLocationOneHeader">
-                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#availableLocationOne" aria-expanded="false" aria-controls="availableLoationOne">
-                                        Location Name
-                                    </button>
-                                </h2>
-                                <div id="availableLocationOne" class="accordion-collapse collapse" aria-labelledby="availableLocationOneHeader" data-bs-parent="#availableItemChecksAccordion1">
-                                    <div class="accordion-body">
-                                        <div class="d-flex align-items-center mb-2">
-                                            <input type="checkbox" class="form-check-input me-2" />
-                                            <span class="me-2">Item Check Name</span>
-                                            <i class="bi bi-box-seam me-2"></i>
-                                            <i class="bi bi-person"></i>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
         </div>
     </div>
 </form>
