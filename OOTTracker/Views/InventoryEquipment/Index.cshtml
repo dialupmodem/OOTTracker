@@ -14,18 +14,21 @@
         <thead class="table-dark">
             <tr>
                 <th data-width="125" scope="col">#</th>
-                <th data-width="75" data-width-unit="%" data-field="Name" data-sortable="true" scope="col">Name</th>
+                <th data-width="60" data-width-unit="%" data-field="Name" data-sortable="true" scope="col">Name</th>
+                <th data-width="350" data-field="Category" data-sortable="true" scope="col">Category</th>
                 <th scope="col">Actions</th>
             </tr>
         </thead>
         @if (Model.Items != null)
         {
             <tbody>
-                @foreach (var item in Model.Items)
+                @for (var i = 0; i < Model.Items.Count; i++)
                 {
+                    var item = Model.Items[i];
                     <tr>
-                        <th scope="row">1</th>
+                        <th scope="row">@(i + 1)</th>
                         <td>@item.Name</td>
+                        <td>@item.Category</td>
                         <td>
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-primary btn-sm me-2">Edit</a>
                             <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm">Delete</a>

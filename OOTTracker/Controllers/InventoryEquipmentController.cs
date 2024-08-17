@@ -16,11 +16,14 @@ namespace OOTTracker.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var _inventoryEquipment = await _context.InventoryEquipment.ToListAsync();
+            var _inventoryEquipment = await _context.InventoryEquipment
+                .Include(i => i.InventoryEquipmentCategory)
+                .ToListAsync();
             var _inventoryEquipmentDtos = _inventoryEquipment.Select(i => new InventoryEquipmentIndexDto()
             {
                 Id = i.InventoryEquipmentId,
-                Name = i.Name
+                Name = i.Name,
+                Category = i.InventoryEquipmentCategory?.Name
             })
             .ToList();
 
