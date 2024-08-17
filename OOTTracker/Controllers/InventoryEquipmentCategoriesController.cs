@@ -45,6 +45,7 @@ namespace OOTTracker.Controllers
             }
 
             var _category = await _context.InventoryEquipmentCategories
+                .Include(c => c.InventoryEquipmentItems)
                 .FirstOrDefaultAsync(c => c.InventoryEquipmentCategoryId == id);
 
             if (_category == null)
@@ -52,7 +53,10 @@ namespace OOTTracker.Controllers
 
             _model = new InventoryEquipmentCategoriesEditViewModel()
             {
-                Name = _category.Name
+                Name = _category.Name,
+                Items = _category.InventoryEquipmentItems?
+                    .Select(i => new SimpleItemDto() { Id = i.InventoryEquipmentId, Name = i.Name})
+                    .ToList()
             };
 
             return View(_model);
