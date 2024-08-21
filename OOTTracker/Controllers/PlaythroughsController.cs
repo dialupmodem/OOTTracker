@@ -196,27 +196,48 @@ namespace OOTTracker.Controllers
             return View(_model);
         }
 
-        [HttpPost]
-        public async Task<IActionResult> EditProgress([FromRoute] Guid id, [FromForm] EditPlaythroughProgressFormDataModel model)
+        //[HttpPost]
+        //public async Task<IActionResult> EditProgress([FromRoute] Guid id, [FromForm] EditPlaythroughProgressFormDataModel model)
+        //{
+        //    if (!ModelState.IsValid)
+        //        return BadRequest(ModelState);
+
+        //    if (model.Equipment != null)
+        //    {
+        //        foreach (var equipmentItem in model.Equipment)
+        //        {
+        //            var _playthroughEquipment = await _context.PlaythroughEquipment
+        //                .FirstOrDefaultAsync(e => e.PlaythroughEquipmentId == equipmentItem.Id);
+
+        //            if (_playthroughEquipment != null)
+        //                _playthroughEquipment.Obtained = equipmentItem.Obtained;
+        //        }
+
+        //        await _context.SaveChangesAsync();
+        //    }
+
+        //    return RedirectToAction("EditProgress", new { id });
+        //}
+
+        public async Task<IActionResult> UpdateEquipmentProgress([FromBody] UpdateEquipmentProgressModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            if (model.Equipment != null)
-            {
-                foreach (var equipmentItem in model.Equipment)
-                {
-                    var _playthroughEquipment = await _context.PlaythroughEquipment
-                        .FirstOrDefaultAsync(e => e.PlaythroughEquipmentId == equipmentItem.Id);
+            var _playthrough = await _context.Playthroughs.FirstOrDefaultAsync(p => p.PlaythroughId == model.PlaythroughId);
+            if (_playthrough == null)
+                return NotFound();
 
-                    if (_playthroughEquipment != null)
-                        _playthroughEquipment.Obtained = equipmentItem.Obtained;
-                }
+            var _equipment = await _context.PlaythroughEquipment
+                .FirstOrDefaultAsync(p => p.PlaythroughId == model.PlaythroughId && p.PlaythroughEquipmentId == model.EquipmentId);
 
-                await _context.SaveChangesAsync();
-            }
+            if (_equipment == null)
+                return NotFound();
 
-            return RedirectToAction("EditProgress", new { id });
+            _equipment.Obtained = model.EquipmentObtained;
+            await _context.SaveChangesAsync();
+
+            return Ok();
         }
 
         public async Task <IActionResult> Delete(Guid id)
