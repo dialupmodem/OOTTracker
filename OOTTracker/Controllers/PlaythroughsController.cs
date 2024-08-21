@@ -127,6 +127,7 @@ namespace OOTTracker.Controllers
             var _equipment = await _context.PlaythroughEquipment
                 .Where(p => p.PlaythroughId == id)
                 .Include(p => p.InventoryEquipment)
+                .ThenInclude(p => p.InventoryEquipmentCategory)
                 .ToListAsync();
 
             var _model = new EditPlaythroughProgressViewModel() { LocationItemChecks = new List<LocationItemChecksViewModel>()};
@@ -160,31 +161,39 @@ namespace OOTTracker.Controllers
                 _model.LocationItemChecks.Add(_locationItemCheckModel);
             }
 
-            _model.Equipment = _equipment.Select(e => new PlaythroughEquipmentViewModel()
+            _model.Equipment = new List<CategorizedEquipmentViewModel>();
+
+            var _equipmentCategories = _equipment
+                .Select(e => e.InventoryEquipment).GroupBy(i => i.InventoryEquipmentCategory)
+                .Select(g => g.First())
+                .Select(i => i.InventoryEquipmentCategory.Name);
+
+            foreach (var _equipmentCategory in _equipmentCategories)
             {
-                Id = e.PlaythroughEquipmentId,
-                Name = e.InventoryEquipment?.Name,
-                Obtained = e.Obtained ?? false,
-            })
-            .ToList();
+                var _categorizedEquipmentViewModel = new CategorizedEquipmentViewModel()
+                {
+                    Category = _equipmentCategory,
+                };
+
+                var _equipmentInCategory = _equipment
+                    .Where(e => e.InventoryEquipment.InventoryEquipmentCategory.Name == _equipmentCategory)
+                    .ToList();
+
+                var _equipmentViewModels = _equipmentInCategory
+                    .Select(e => new EquipmentViewModel()
+                    {
+                        Name = e.InventoryEquipment.Name,
+                        Id = e.PlaythroughEquipmentId,
+                        Obtained = e.Obtained ?? false
+                    })
+                    .ToList();
+
+                _categorizedEquipmentViewModel.Equipment = _equipmentViewModels;
+                _model.Equipment.Add(_categorizedEquipmentViewModel);
+            }
 
             _model.Name = "test";
             return View(_model);
-
-            //var _itemCheckBoxes = _itemChecks
-            //    .Select(i => new CheckboxListViewModel()
-            //    {
-            //        Id = i.ItemCheckId!.Value,
-            //        Text = $"{i.ItemCheck.Location.Name} - {i.ItemCheck.ItemCheckType.Name} {i.ItemCheck.Description}"
-            //    })
-            //    .ToList();
-
-            //var _model = new EditPlaythroughProgressViewModel()
-            //{
-            //    ItemChecks = _itemCheckBoxes
-            //};
-
-            //return View(_model);
         }
 
         [HttpPost]

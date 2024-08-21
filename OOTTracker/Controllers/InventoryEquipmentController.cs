@@ -26,6 +26,8 @@ namespace OOTTracker.Controllers
                 Name = i.Name,
                 Category = i.InventoryEquipmentCategory?.Name
             })
+            .OrderBy(i => i.Name)
+            .ThenBy(i => i.Category)
             .ToList();
 
             var _model = new InventoryEquipmentIndexModel()

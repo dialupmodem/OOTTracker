@@ -24,6 +24,7 @@ namespace OOTTracker.Controllers
                 Id = c.InventoryEquipmentCategoryId,
                 Name = c.Name,
             })
+            .OrderBy(c => c.Name)
             .ToList();
 
             var _model = new InventoryEquipmentCategoriesIndexModel()
@@ -56,6 +57,7 @@ namespace OOTTracker.Controllers
                 Name = _category.Name,
                 Items = _category.InventoryEquipmentItems?
                     .Select(i => new SimpleItemDto() { Id = i.InventoryEquipmentId, Name = i.Name})
+                    .OrderBy(i => i.Name)
                     .ToList()
             };
 

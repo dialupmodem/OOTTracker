@@ -3,7 +3,7 @@
     Layout = "_Layout";
 }
 @section HeaderContent {
-        Edit Playthrough Progress - @Model.Name
+            Edit Playthrough Progress - @Model.Name
 }
 
 <form method="post">
@@ -20,18 +20,43 @@
             </li>
         </ul>
         <div class="tab-content" id="itemChecksTabsContent">
-            <div id="equipment" class="tab-pane fade show active" role="tabpanel" aria-labelledby="equipment-tab">
+            <div id="equipment" class="tab-pane fade show active" role="tabpanel" aria-labelledby="equipmentTab">
                 @if (Model.Equipment != null)
                 {
                     <div class="row mt-3">
-                        @foreach (var equipment in Model.Equipment)
+                        @for (var i = 0; i < Model.Equipment.Count; i++)
                         {
-                            <div class="col-1 col-sm-1 mb-3">
-                                <div class="card text-center" style="font-size: 0.9em;">
-                                    <div class="card-body">
-                                        <i class="bi bi-shield"></i>
-                                        <p class="card-text mt-2">@equipment.Name</p>
-                                        <input type="checkbox" class="form-check-input" />
+                            var equipmentItem = Model.Equipment[i];
+
+                            <div class="col-lg-12">
+                                <div class="accordion mt-3" id="@($"equipmentAccordion{i}")">
+                                    <div class="accordion-item">
+                                        <h2 class="accordion-header" id="@($"category{i}Header")">
+                                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="@($"#category{i}")" aria-expanded="false" aria-controls="@($"location{i}")">
+                                                @equipmentItem.Category
+                                            </button>
+                                        </h2>
+                                    </div>
+                                    <div id="@($"category{i}")" class="accordion-collapse collapse" aria-labelledby="@($"category{i}Header")" data-bs-parent="@($"#equipmentAccordion{i}")">
+                                        @if (equipmentItem.Equipment != null)
+                                        {
+                                            <div class="accordion-body">
+                                                <div class="row">
+                                                    @foreach (var equipment in equipmentItem.Equipment)
+                                                    {
+                                                        <div class="col-1 col-sm-1 mb-3">
+                                                            <div class="card text-center" style="font-size: 0.9em;">
+                                                                <div class="card-body">
+                                                                    <i class="bi bi-shield"></i>
+                                                                    <p action="card-text mt-2">@equipment.Name</p>
+                                                                    <input type="checkbox" class="form-check-input" />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    }
+                                                </div>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </div>
@@ -39,6 +64,7 @@
                     </div>
                 }
             </div>
+
             <div id="availableChecks" class="tab-pane fade" role="tabpanel" aria-labelledby="available-checks-tab">
                 <div class="row">
                     <div class="col-lg-4">
@@ -74,7 +100,7 @@
 
                             <div class="col-lg-4">
                                 <div class="accordion mt-3" id="@($"allItemChecksAccordion{i}")">
-                                    <div action="accordion-item">
+                                    <div class="accordion-item">
                                         <h2 class="accordion-header" id="@($"location{i}Header")">
                                             <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="@($"#location{i}")" aria-expanded="false" aria-controls="@($"location{i}")">
                                                 @itemCheckLocation.LocationName

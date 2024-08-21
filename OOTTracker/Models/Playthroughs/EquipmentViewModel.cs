@@ -1,6 +1,6 @@
 ﻿namespace OOTTracker.Models.Playthroughs
 {
-    public class PlaythroughEquipmentViewModel
+    public class EquipmentViewModel
     {
         public Guid Id { get; set; }
         public string? Name { get; set; }
