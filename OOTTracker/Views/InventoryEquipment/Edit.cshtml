@@ -1,28 +1,29 @@
 ﻿@model OOTTracker.Models.InventoryEquipment.InventoryEquipmentEditViewModel
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = "_Layout";
 }
 
+<div class="header">
+    <h1 class="h4">Edit Equipment</h1>
+</div>
 <form method="post">
-    <div class="row">
-        <div class="card">
-            <div class="card-header">
-                <h2>Edit Inventory Equipment</h2>
-            </div>
-            <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col-6">
-                        <label for="Name">Name</label>
-                        <input class="form-control" type="text" asp-for="Name" />
-                    </div>
-                </div>
-                <div class="row">
-                    <div action="col">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </div>
-            </div>
+    <div class="row mb-3">
+        <div class="col-md-6">
+            <label asp-for="Name">Item Name</label>
+            <input asp-for="Name" class="form-control" />
+        </div>
+        <div class="col-md-6">
+            <label asp-for="CategoryId">Category</label>
+            <select class="form-select" asp-for="CategoryId" asp-items="Model.Categories">
+                <option value="Select a category..."></option>
+            </select>
+        </div>
+    </div>
+    <div action="row">
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary me-2">Save Changes</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
         </div>
     </div>
 </form>
+

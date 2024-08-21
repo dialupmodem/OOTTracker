@@ -103,5 +103,20 @@ namespace OOTTracker.Controllers
 
             return RedirectToAction("Index");
         }
+
+        [Route("DeleteItem/{itemId}/{categoryId}")]
+        public async Task<IActionResult> DeleteItem([FromRoute] Guid itemId, [FromRoute] Guid categoryId)
+        {
+            var _item = await _context.InventoryEquipment
+                .FirstOrDefaultAsync(i => i.InventoryEquipmentId == itemId);
+
+            if (_item == null)
+                return NotFound();
+
+            _item.InventoryEquipmentCategoryId = null;
+            await _context.SaveChangesAsync();
+
+            return RedirectToAction("Edit", new {id = categoryId});
+        }
     }
 }

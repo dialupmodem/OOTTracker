@@ -48,7 +48,6 @@
                 </div>
             </div>
         </form>
-
     </div>
     <div id="items" class="tab-pane fade">
         <div class="table-responsive">
@@ -65,6 +64,23 @@
                         <th data-width="200" scope="col">Actions</th>
                     </tr>
                 </thead>
+                @if (Model.Items != null)
+                {
+                    var categoryId = ViewContext.RouteData.Values["id"];
+                    <tbody>
+                        @for (var i = 0; i < Model.Items.Count; i++)
+                        {
+                            var item = Model.Items[i];
+                            <tr>
+                                <td>@(i + 1)</td>
+                                <td>@item.Name</td>
+                                <td>
+                                    <a asp-controller="InventoryEquipmentCategories" asp-action="DeleteItem" asp-route-itemId="@item.Id" asp-route-categoryId="@categoryId" class="btn btn-danger btn-sm">Delete</a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                }
             </table>
         </div>
     </div>

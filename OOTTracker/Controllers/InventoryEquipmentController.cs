@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using OOTTracker.Data;
 using OOTTracker.Models.InventoryEquipment;
@@ -38,10 +39,26 @@ namespace OOTTracker.Controllers
         [HttpGet]
         public async Task<ActionResult> Edit (Guid? id)
         {
+            var _categories = await _context.InventoryEquipmentCategories
+                .ToListAsync();
+
+            var _categoryDtos = _categories
+                .Select(c => new SelectListItem()
+                {
+                    Text = c.Name,
+                    Value = c.InventoryEquipmentCategoryId.ToString()
+                })
+                .ToList();
+                
+
             InventoryEquipmentEditViewModel _model;
             if (id == null)
             {
-                _model = new InventoryEquipmentEditViewModel();
+                _model = new InventoryEquipmentEditViewModel()
+                {
+                    Categories = _categoryDtos
+                };
+
                 return View(_model);
             }
 
@@ -54,6 +71,8 @@ namespace OOTTracker.Controllers
             _model = new InventoryEquipmentEditViewModel()
             {
                 Name = _inventoryEquipment.Name,
+                CategoryId = _inventoryEquipment.InventoryEquipmentCategoryId,
+                Categories = _categoryDtos
             };
 
             return View(_model);
@@ -82,6 +101,7 @@ namespace OOTTracker.Controllers
             }
 
             _inventoryEquipment.Name = model.Name;
+            _inventoryEquipment.InventoryEquipmentCategoryId = model.CategoryId;
             await _context.SaveChangesAsync();
 
             //if (TempData["QuickAdd-Redirect"] != null)
