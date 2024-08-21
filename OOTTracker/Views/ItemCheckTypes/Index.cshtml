@@ -1,39 +1,38 @@
 ﻿@model OOTTracker.Models.ItemCheckTypes.ItemCheckTypesIndexModel
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @{
     Layout = "_Layout";
 }
-
-<h2>Item Check Types</h2>
-<div class="row mt-3">
-    <div class="col-3">
-        <a class="btn btn-primary" asp-action="Edit">Add Item Check Type</a>
+<div class="header">
+    <h1 class="h4">Item Check Types</h1>
+    <div class="text-end">
+        <a asp-action="Edit" class="btn btn-success">Add Item Check Type</a>
     </div>
 </div>
-<table data-toggle="table" data-pagination="true" data-page-size="10" data-search="true">
-    <thead>
-        <tr>
-            <th data-width="125">#</th>
-            <th data-field="Name" data-sortable="true">Name</th>
-        </tr>
-    </thead>
-    @if (Model.ItemCheckTypes != null)
-    {
-        <tbody>
-            @foreach (var itemCheckType in Model.ItemCheckTypes)
-            {
-                <tr>
-                    <td>
-                        <a class="btn btn-primary me-2" asp-action="Edit" asp-route-id="@itemCheckType.Id">
-                            <i class="bi-pencil"></i>
-                        </a>
-                        <a class="btn btn-danger" asp-action="Delete" asp-route-id="@itemCheckType.Id">
-                            <i class="bi-trash3"></i>
-                        </a>
-                    </td>
-                    <td>@itemCheckType.Name</td>
-                </tr>
-            }
-        </tbody>
-    }
-</table>
+<div class="table-responsive">
+    <table data-toggle="table" data-pagination="true" data-page-size="10" data-search="true" class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th data-width="125">#</th>
+                <th data-field="Name" data-sortable="true">Name</th>
+                <th data-width="150">Actions</th>
+            </tr>
+        </thead>
+        @if (Model.ItemCheckTypes != null)
+        {
+            <tbody>
+                @for (var i = 0; i < Model.ItemCheckTypes.Count; i++)
+                {
+                    var itemCheckType = Model.ItemCheckTypes[i];
+                    <tr>
+                        <td>@(i + 1)</td>
+                        <td>@itemCheckType.Name</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@itemCheckType.Id" class="btn btn-primary btn-sm me-2">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@itemCheckType.Id" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        }
+    </table>
+</div>
