@@ -1,0 +1,39 @@
+﻿@model OOTTracker.Models.Playthroughs.EditPlaythroughProgressViewModel
+@if (Model.LocationItemChecksAvailable != null)
+{
+    <div class="row">
+        @for (var i = 0; i < Model.LocationItemChecksAvailable.Count; i++)
+        {
+            var itemCheckLocation = Model.LocationItemChecksAvailable[i];
+
+            <div class="col-lg-4">
+                <div class="accordion mt-3" id="@($"availableItemChecksAccordion{i}")">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="@($"location{i}Header")">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="@($"#location{i}")" aria-expanded="false" aria-controls="@($"location{i}")">
+                                @itemCheckLocation.LocationName
+                            </button>
+                        </h2>
+                        <div id="@($"location{i}")" class="accordion-collapse collapse" aria-labelledby="@($"location{i}Header")" data-bs-parent="@($"#availableItemChecksAccordion{i}")">
+                            @if (itemCheckLocation.ItemChecks != null)
+                            {
+                                <div class="accordion-body">
+                                    @foreach (var itemCheck in itemCheckLocation.ItemChecks)
+                                    {
+                                        <div action="d-flex align-items-center mb-2">
+                                            <input type="checkbox" class="form-check-input me-2" />
+                                            <span class="me-2">@itemCheck.Description</span>
+                                            <i class="bi bi-box-seam me-2" title="@itemCheck.CheckType"></i>
+                                            <i class="bi bi-person" title="@itemCheck.Description"></i>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        }
+    </div>
+}

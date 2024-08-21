@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using OOTTracker.Data;
 using OOTTracker.Models.Playthroughs;
-using OOTTracker.Models.Shared;
 
 namespace OOTTracker.Controllers
 {
@@ -116,52 +115,17 @@ namespace OOTTracker.Controllers
         [HttpGet]
         public async Task<IActionResult> EditProgress(Guid id)
         {
-            var _itemChecks = await _context.PlaythroughItemChecks
-                .Where(p => p.PlaythroughId == id)
-                .Include(p => p.ItemCheck)
-                .ThenInclude(i => i.Location)
-                .Include(p => p.ItemCheck)
-                .ThenInclude(i => i.ItemCheckType)
-                .ToListAsync();
+            var _model = new EditPlaythroughProgressViewModel();
+
+            _model.LocationItemChecksAll = await GetAllItemChecksAsync(id);
+            _model.LocationItemChecksAvailable = await GetAvailableItemChecksAsync(id);
+            _model.Equipment = new List<CategorizedEquipmentViewModel>();
 
             var _equipment = await _context.PlaythroughEquipment
                 .Where(p => p.PlaythroughId == id)
                 .Include(p => p.InventoryEquipment)
                 .ThenInclude(p => p.InventoryEquipmentCategory)
                 .ToListAsync();
-
-            var _model = new EditPlaythroughProgressViewModel() { LocationItemChecks = new List<LocationItemChecksViewModel>()};
-
-            var _locations = _itemChecks.Select(i => i.ItemCheck.Location).GroupBy(l => l.LocationId).Select(l => l.First()).ToList();
-            foreach (var location in _locations)
-            {
-                var _locationItemChecks = _itemChecks
-                    .Where(i => i.ItemCheck != null &&
-                    i.ItemCheck.Location != null &&
-                    i.ItemCheck.Location.LocationId ==
-                    location.LocationId);
-
-                var _locationItemCheckModel = new LocationItemChecksViewModel()
-                {
-                    LocationId = location.LocationId,
-                    LocationName = location.Name,
-                    ItemChecks = _itemChecks
-                        .Where(i => i.ItemCheck != null && i.ItemCheck.Location != null && i.ItemCheck.LocationId == location.LocationId)
-                        .Select(i => new EditPlaythroughProgressItemCheckViewModel()
-                        {
-                            ItemCheckId = i.ItemCheckId,
-                            Obtained = i.Obtained ?? false,
-                            CheckType = i.ItemCheck.ItemCheckType.Name,
-                            Description = i.ItemCheck.Description
-                        })
-                        .ToList()
-                };
-
-
-                _model.LocationItemChecks.Add(_locationItemCheckModel);
-            }
-
-            _model.Equipment = new List<CategorizedEquipmentViewModel>();
 
             var _equipmentCategories = _equipment
                 .Select(e => e.InventoryEquipment).GroupBy(i => i.InventoryEquipmentCategory)
@@ -196,29 +160,54 @@ namespace OOTTracker.Controllers
             return View(_model);
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> EditProgress([FromRoute] Guid id, [FromForm] EditPlaythroughProgressFormDataModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //        return BadRequest(ModelState);
+        public async Task<IActionResult> LoadAvailableChecks(Guid id)
+        {
+            var _model = new EditPlaythroughProgressViewModel();
 
-        //    if (model.Equipment != null)
-        //    {
-        //        foreach (var equipmentItem in model.Equipment)
-        //        {
-        //            var _playthroughEquipment = await _context.PlaythroughEquipment
-        //                .FirstOrDefaultAsync(e => e.PlaythroughEquipmentId == equipmentItem.Id);
+            _model.LocationItemChecksAll = await GetAllItemChecksAsync(id);
+            _model.LocationItemChecksAvailable = await GetAvailableItemChecksAsync(id);
+            _model.Equipment = new List<CategorizedEquipmentViewModel>();
 
-        //            if (_playthroughEquipment != null)
-        //                _playthroughEquipment.Obtained = equipmentItem.Obtained;
-        //        }
+            var _equipment = await _context.PlaythroughEquipment
+                .Where(p => p.PlaythroughId == id)
+                .Include(p => p.InventoryEquipment)
+                .ThenInclude(p => p.InventoryEquipmentCategory)
+                .ToListAsync();
 
-        //        await _context.SaveChangesAsync();
-        //    }
+            var _equipmentCategories = _equipment
+                .Select(e => e.InventoryEquipment).GroupBy(i => i.InventoryEquipmentCategory)
+                .Select(g => g.First())
+                .Select(i => i.InventoryEquipmentCategory.Name);
 
-        //    return RedirectToAction("EditProgress", new { id });
-        //}
+            foreach (var _equipmentCategory in _equipmentCategories)
+            {
+                var _categorizedEquipmentViewModel = new CategorizedEquipmentViewModel()
+                {
+                    Category = _equipmentCategory,
+                };
 
+                var _equipmentInCategory = _equipment
+                    .Where(e => e.InventoryEquipment.InventoryEquipmentCategory.Name == _equipmentCategory)
+                    .ToList();
+
+                var _equipmentViewModels = _equipmentInCategory
+                    .Select(e => new EquipmentViewModel()
+                    {
+                        Name = e.InventoryEquipment.Name,
+                        Id = e.PlaythroughEquipmentId,
+                        Obtained = e.Obtained ?? false
+                    })
+                    .ToList();
+
+                _categorizedEquipmentViewModel.Equipment = _equipmentViewModels;
+                _model.Equipment.Add(_categorizedEquipmentViewModel);
+            }
+
+            _model.Name = "test";
+            return PartialView("_AvailableChecksPartial", _model);
+        }
+
+        [HttpPost]
         public async Task<IActionResult> UpdateEquipmentProgress([FromBody] UpdateEquipmentProgressModel model)
         {
             if (!ModelState.IsValid)
@@ -252,6 +241,105 @@ namespace OOTTracker.Controllers
             await _context.SaveChangesAsync();
 
             return RedirectToAction("Index");
+        }
+
+        [NonAction]
+        public async Task<List<LocationItemChecksViewModel>?> GetAllItemChecksAsync(Guid playthroughId)
+        {
+            List<LocationItemChecksViewModel>? _itemChecksViewModels = null;
+
+            var _itemChecks = await _context.PlaythroughItemChecks
+              .Where(p => p.PlaythroughId == playthroughId)
+              .Include(p => p.ItemCheck)
+              .ThenInclude(i => i.Location)
+              .Include(p => p.ItemCheck)
+              .ThenInclude(i => i.ItemCheckType)
+              .ToListAsync();
+
+            var _locations = _itemChecks.Select(i => i.ItemCheck.Location).GroupBy(l => l.LocationId).Select(l => l.First()).ToList();
+            if (_locations.Count > 0)
+                _itemChecksViewModels = new List<LocationItemChecksViewModel>();
+
+            foreach (var location in _locations)
+            {
+                var _locationItemChecks = _itemChecks
+                    .Where(i => i.ItemCheck != null &&
+                    i.ItemCheck.Location != null &&
+                    i.ItemCheck.Location.LocationId ==
+                    location.LocationId);
+
+                var _locationItemCheckModel = new LocationItemChecksViewModel()
+                {
+                    LocationId = location.LocationId,
+                    LocationName = location.Name,
+                    ItemChecks = _itemChecks
+                        .Where(i => i.ItemCheck != null && i.ItemCheck.Location != null && i.ItemCheck.LocationId == location.LocationId)
+                        .Select(i => new EditPlaythroughProgressItemCheckViewModel()
+                        {
+                            ItemCheckId = i.ItemCheckId,
+                            Obtained = i.Obtained ?? false,
+                            CheckType = i.ItemCheck.ItemCheckType.Name,
+                            Description = i.ItemCheck.Description
+                        })
+                        .ToList()
+                };
+
+                _itemChecksViewModels!.Add(_locationItemCheckModel);
+            }
+
+            return _itemChecksViewModels;
+        }
+        [NonAction]
+        public async Task<List<LocationItemChecksViewModel>?> GetAvailableItemChecksAsync(Guid playthroughId)
+        {
+            List<LocationItemChecksViewModel>? _itemChecksViewModels = null;
+
+            var _itemChecks = await _context.PlaythroughItemChecks
+              .Where(p => p.PlaythroughId == playthroughId)
+              .Include(p => p.ItemCheck)
+              .ThenInclude(i => i.Location)
+              .Include(p => p.ItemCheck)
+              .ThenInclude(i => i.ItemCheckType)
+              .Where(i => i.ItemCheck.ItemCheckRequirements
+                .All(r => i.Playthrough.PlaythroughEquipment
+                    .Where(p => p.Obtained ?? false)
+                    .Select(e => e.InventoryEquipmentId)
+                    .Contains(r.InventoryEquipmentId)))
+              .ToListAsync();
+
+
+            var _locations = _itemChecks.Select(i => i.ItemCheck.Location).GroupBy(l => l.LocationId).Select(l => l.First()).ToList();
+            if (_locations.Count > 0)
+                _itemChecksViewModels = new List<LocationItemChecksViewModel>();
+
+            foreach (var location in _locations)
+            {
+                var _locationItemChecks = _itemChecks
+                    .Where(i => i.ItemCheck != null &&
+                    i.ItemCheck.Location != null &&
+                    i.ItemCheck.Location.LocationId ==
+                    location.LocationId);
+
+                var _locationItemCheckModel = new LocationItemChecksViewModel()
+                {
+                    LocationId = location.LocationId,
+                    LocationName = location.Name,
+                    ItemChecks = _itemChecks
+                        .Where(i => i.ItemCheck != null && i.ItemCheck.Location != null && i.ItemCheck.LocationId == location.LocationId)
+                        .Select(i => new EditPlaythroughProgressItemCheckViewModel()
+                        {
+                            ItemCheckId = i.ItemCheckId,
+                            Obtained = i.Obtained ?? false,
+                            CheckType = i.ItemCheck.ItemCheckType.Name,
+                            Description = i.ItemCheck.Description
+                        })
+                        .ToList()
+                };
+
+                _itemChecksViewModels!.Add(_locationItemCheckModel);
+            }
+
+            return _itemChecksViewModels;
         }
     }
 }
