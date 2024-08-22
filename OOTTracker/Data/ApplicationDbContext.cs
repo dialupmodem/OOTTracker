@@ -17,6 +17,7 @@ namespace OOTTracker.Data
         public DbSet<Playthrough> Playthroughs { get; set; }
         public DbSet<PlaythroughEquipment> PlaythroughEquipment { get; set; }
         public DbSet<PlaythroughItemCheck> PlaythroughItemChecks { get; set; }
+        public DbSet<SpoilerMapping> SpoilerMappings { get; set; }
 
         public ApplicationDbContext() { }
         public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
@@ -58,6 +59,11 @@ namespace OOTTracker.Data
             modelBuilder.Entity<ItemCheck>()
                 .HasMany(i => i.PlaythroughItemChecks)
                 .WithOne(p => p.ItemCheck)
+                .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<ItemCheck>()
+                .HasMany(i => i.SpoilerMappings)
+                .WithOne(s => s.ItemCheck)
                 .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<ItemCheckType>()
