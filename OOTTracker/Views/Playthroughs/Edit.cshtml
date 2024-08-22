@@ -1,36 +1,38 @@
-﻿@{
+﻿@model OOTTracker.Models.Playthroughs.EditPlaythroughViewModel
+@{
     Layout = "_Layout";
 }
-@model OOTTracker.Models.Playthroughs.EditPlaythroughViewModel
-@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+<div class="header">
+    <h1 class="h4">Edit Playthrough</h1>
+</div>
 
 <form method="post">
-    <div class="row">
-        <div class="card">
-            <div class="card-header">
-                <h2>Edit Playthrough</h2>
-            </div>
-            <div class="card-body">
-                <div class="row mb-3">
-                    <div class="col-6">
-                        <label for="Name">Name</label>
-                        <input class="form-control" type="text" asp-for="Name" />
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-6">
-                        <div class="form-check">
-                            <input class="form-check-input" type="checkbox" asp-for="IsRandomized" true-value="true" false-value="false" />
-                            <label class="form-check-label" for="IsRandomized">Randomized?</label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col">
-                        <button type="submit" class="btn btn-primary">Save</button>
-                    </div>
-                </div>
+    <div class="row mb-3">
+        <h2>Edit Playthrough</h2>
+    </div>
+    <div class="row mb-3">
+        <div class="col-6">
+            <label for="Name">Name</label>
+            <input class="form-control" type="text" asp-for="Name" />
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-6">
+            <div class="form-check">
+                <input class="form-check-input" type="checkbox" asp-for="IsRandomized" true-value="true" false-value="false" />
+                <label class="form-check-label" for="IsRandomized">Randomized?</label>
             </div>
         </div>
     </div>
+    <div class="row mb-3">
+        <div class="col">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </div>
+</form>
+
+<form asp-action="UploadSpoiler" asp-route-id="@Context.GetRouteValue("id")" method="post" enctype="multipart/form-data">
+    <input name="file" type="file" />
+    <button type="submit" class="btn btn-primary">Upload</button>
 </form>

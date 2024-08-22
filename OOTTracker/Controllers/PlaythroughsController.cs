@@ -112,6 +112,21 @@ namespace OOTTracker.Controllers
             return RedirectToAction("Index");
         }
 
+        [HttpPost]
+        public async Task<IActionResult> UploadSpoiler([FromRoute]Guid id, IFormFile file)
+        {
+            if (file != null && file.Length > 0)
+            {
+                string _fileContent;
+                using (var streamReader = new StreamReader(file.OpenReadStream()))
+                {
+                    _fileContent = await streamReader.ReadToEndAsync();
+                }
+            }
+
+            return Ok();
+        }
+
         [HttpGet]
         public async Task<IActionResult> EditProgress(Guid id)
         {
@@ -242,6 +257,8 @@ namespace OOTTracker.Controllers
 
             return RedirectToAction("Index");
         }
+
+
 
         [NonAction]
         public async Task<List<LocationItemChecksViewModel>?> GetAllItemChecksAsync(Guid playthroughId)
