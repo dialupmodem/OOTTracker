@@ -1,0 +1,104 @@
+﻿@model OOTTracker.Models.SpoilerMappings.MapUsingFileViewModel
+@{
+    Layout = "_Layout";
+}
+
+<script>
+    $(document).ready(function () {
+        $('[data-location-text]').click(function () {
+            let locationText = $(this).attr('data-location-text')
+            $('#locationText').val(locationText)
+
+            $('#saveMappingBtn').off('click')
+
+            $('#saveMappingBtn').click(function() {
+                $.ajax({
+                    url: '/SpoilerMappings/UpdateLocationCheckMapping',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({
+                        locationText: locationText, 
+                        itemCheckId: $('#itemCheckSelect').val()
+                    }),
+                    success: function() { console.log('succeeded') }
+                })
+
+                console.log({locationText: locationText, itemCheckId: $('#itemCheckSelect').val()})
+            })
+
+            $('#selectItemCheckModal').modal('show')
+        })
+    })
+
+
+    function openItemCheckSelection(locationText) {
+
+    }
+</script>
+
+<div class="header">
+    <h1 class="h4">Add Spoiler Mappings</h1>
+</div>
+
+<form asp-action="UploadMappingFile" method="post" enctype="multipart/form-data">
+    <input name="file" type="file" />
+    <button type="submit" class="btn btn-primary">Upload</button>
+</form>
+
+<form method="post">
+    <div class="table-responsive">
+        <table data-toggle="table" data-pagination="true" data-page-size="20" data-search="true" data-sort="true" class="table table-striped table-hover">
+            <thead class="table-dark">
+                <tr>
+                    <th data-width="125">#</th>
+                    <th data-field="LocationText">Location Text</th>
+                    <th>Item Check</th>
+                    <th data-width="60">Actions</th>
+                </tr>
+            </thead>
+            @if (Model.LocationCheckMappings != null)
+            {
+                <tbody>
+                    @for (var i = 0; i < Model.LocationCheckMappings.Count; i++)
+                    {
+                        var locationCheckMapping = Model.LocationCheckMappings[i];
+                        <tr>
+                            <td>@(i + 1)</td>
+                            <td>@locationCheckMapping.LocationText</td>
+                            <td>
+                                @locationCheckMapping.ItemCheck
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-primary btn-sm me-2" data-location-text="@locationCheckMapping.LocationText">Edit</button>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            }
+        </table>
+    </div>
+</form>
+
+<div class="modal fade" id="selectItemCheckModal" tabindex="-1" aria-labelledby="selectItemCheckModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="selectItemCheckModalLabel">Select Item Check</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <input id="locationText" type="hidden" />
+                <div class="mb-3">
+                    <label for="itemCheckSelect" class="form-label">Item Check</label>
+                    <select asp-items="Model.ItemChecks" class="form-select" id="itemCheckSelect">
+                        <option value="">Select Item Check...</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button id="saveMappingBtn" type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

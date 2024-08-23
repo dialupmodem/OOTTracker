@@ -1,0 +1,48 @@
+﻿@model OOTTracker.Models.SpoilerMappings.SpoilerMappingsIndexModel
+@{
+    Layout = "_Layout";
+}
+
+<div class="header">
+    <h1 class="h4">Spoiler Mappings</h1>
+    <div class="text-end">
+        <a asp-action="Edit" class="btn btn-success">Add Mapping</a>
+    </div>
+</div>
+<div class="row mb-3">
+    <div class="col-md-3">
+        <a asp-action="MapUsingFile" class="btn btn-success">Map Using Spoiler File</a>
+    </div>
+</div>
+<div class="table-responsive">
+    <table data-toggle="table" data-pagination="true" data-page-size="10" data-search="true" class="table table-striped table-hover">
+        <thead class="table-dark">
+            <tr>
+                <th data-width="125">#</th>
+                <th data-field="LocationText" data-sortable="true">Location Text</th>
+                <th data-field="ItemCheckLocation" data-sortable="true">Item Check Location</th>
+                <th data-field="ItemCheckName" data-sortable="true">Item Check Name</th>
+                <th data-width="150">Actions</th>
+            </tr>
+        </thead>
+        @if (Model.SpoilerMappings != null)
+        {
+            <tbody>
+                @for (var i = 0; i < Model.SpoilerMappings.Count; i++)
+                {
+                    var spoilerMapping = Model.SpoilerMappings[i];
+                    <tr>
+                        <td>@(i + 1)</td>
+                        <td>@spoilerMapping.LocationText</td>
+                        <td>@spoilerMapping.ItemCheckLocation</td>
+                        <td>@spoilerMapping.ItemCheckName</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@spoilerMapping.Id" class="btn btn-primary btn-sm me-2">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@spoilerMapping.Id" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        }
+    </table>
+</div>

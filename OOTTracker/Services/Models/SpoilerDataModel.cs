@@ -1,8 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace OOTTracker.Models.Playthroughs
+namespace OOTTracker.Services.Models
 {
-    public class SpoilerData
+    public class SpoilerDataModel
     {
 
         [JsonPropertyName("version")]
@@ -12,19 +12,19 @@ namespace OOTTracker.Models.Playthroughs
         public string? Seed { get; set; }
 
         [JsonPropertyName("finalSeed")]
-        public int? FinalSeed { get; set; }
+        public long? FinalSeed { get; set; }
 
         [JsonPropertyName("file_hash")]
         public List<int>? FileHash { get; set; }
 
         [JsonPropertyName("settings")]
-        public Dictionary<string, string>? Settings { get; set; }
+        public Dictionary<string, object>? Settings { get; set; }
 
         [JsonPropertyName("excludedLocations")]
         public List<string>? ExcludedLocations { get; set; }
 
         [JsonPropertyName("playthrough")]
-        public List<object>? Playthrough { get; set; }
+        public object? Playthrough { get; set; }
 
         [JsonPropertyName("warpMinuetText")]
         public string? WarpMinuetText { get; set; }
@@ -84,9 +84,9 @@ namespace OOTTracker.Models.Playthroughs
         public string? SariaHintLocation { get; set; }
 
         [JsonPropertyName("hints")]
-        public List<object>? Hints { get; set; }
+        public object? Hints { get; set; }
 
-        [JsonPropertyName("locations")]
-        public Dictionary<string, object>? Locations { get; set; }
+        [JsonIgnore]
+        public Dictionary<string, ILocationItem>? Locations { get; set; }
     }
 }

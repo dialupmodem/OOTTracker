@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using OOTTracker.Data;
+using OOTTracker.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -8,6 +9,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 
 builder.Services.AddRouting();
 builder.Services.AddMvc();
+
+builder.Services.AddScoped<ISpoilerFileProcessorService, SpoilerFileProcessorService>();
 
 var app = builder.Build();
 
